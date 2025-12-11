@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
     <title>Dispute On Demand Pro v1.0 - Credit Repair Tool</title>
     <style>
         :root {
@@ -22,8 +25,16 @@
             box-sizing: border-box;
         }
 
+        html,
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                sans-serif;
             background: linear-gradient(135deg, #f0f4f8 0%, #e8f1f6 100%);
             color: var(--color-text);
             line-height: 1.6;
@@ -32,44 +43,46 @@
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 16px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
+            margin-bottom: 20px;
+            padding: 16px 14px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         header h1 {
             color: var(--color-primary);
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-size: 26px;
+            margin-bottom: 6px;
+            word-wrap: break-word;
         }
 
         header p {
             color: #666;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .version-info {
             font-size: 11px;
             color: #999;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .disclaimer-banner {
             background: #fff3cd;
             border-left: 4px solid #ff6b6b;
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 10px 12px;
+            margin: 12px 0 8px;
+            border-radius: 6px;
+            font-size: 11px;
             color: #333;
-            line-height: 1.5;
+            line-height: 1.4;
+            text-align: left;
         }
 
         .disclaimer-banner strong {
@@ -82,8 +95,8 @@
             background: var(--color-success);
             color: white;
             border-radius: 20px;
-            font-size: 12px;
-            margin-top: 10px;
+            font-size: 11px;
+            margin-top: 6px;
             font-weight: 600;
         }
 
@@ -97,53 +110,49 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1.1fr 2fr;
             gap: 20px;
             margin-bottom: 20px;
         }
 
-        .sidebar {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
+        .sidebar,
         .main-panel {
             background: white;
-            padding: 25px;
+            padding: 18px 16px;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .form-section {
-            margin-bottom: 25px;
+            margin-bottom: 22px;
         }
 
         .form-section h3 {
             color: var(--color-primary);
-            font-size: 16px;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
             border-bottom: 2px solid var(--color-secondary);
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
             color: var(--color-text);
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        input, select, textarea {
+        input,
+        select,
+        textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
+            padding: 8px 9px;
+            margin-bottom: 10px;
             border: 1px solid var(--color-border);
             border-radius: 6px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             box-sizing: border-box;
         }
 
@@ -153,19 +162,23 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px 16px;
             background: var(--color-primary);
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.08s ease-out;
             font-size: 14px;
         }
 
         button:hover {
             background: var(--color-primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
         }
 
         button:disabled {
@@ -192,9 +205,9 @@
         .dispute-item {
             background: #f9f9f9;
             border-left: 4px solid var(--color-primary);
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 4px;
+            padding: 10px 10px 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -210,21 +223,21 @@
 
         .dispute-item input[type="checkbox"] {
             width: auto;
-            margin-right: 10px;
+            margin-right: 8px;
             cursor: pointer;
         }
 
         .account-info {
-            font-size: 13px;
+            font-size: 12px;
             color: #666;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
         .alert {
-            padding: 12px;
+            padding: 10px 10px;
             border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
         }
 
         .alert-info {
@@ -248,13 +261,13 @@
         .letter-preview {
             background: white;
             border: 1px solid var(--color-border);
-            padding: 20px;
+            padding: 14px;
             border-radius: 6px;
-            margin-top: 15px;
+            margin-top: 10px;
             font-family: "Courier New", monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            max-height: 400px;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 360px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-wrap: break-word;
@@ -262,17 +275,18 @@
 
         .step-indicator {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
         }
 
         .step {
             flex: 1;
-            padding: 10px;
+            padding: 8px 6px;
             text-align: center;
             background: var(--color-secondary);
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
         }
 
@@ -289,22 +303,23 @@
         .bureau-list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .bureau-checkbox {
-            padding: 10px;
+            padding: 8px;
             border: 2px solid var(--color-border);
             border-radius: 6px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 12px;
         }
 
         .bureau-checkbox input {
             width: auto;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .bureau-checkbox:hover {
@@ -320,27 +335,27 @@
         .law-info {
             background: #f0f7ff;
             border-left: 4px solid var(--color-primary);
-            padding: 12px;
+            padding: 10px 10px;
             border-radius: 4px;
-            font-size: 13px;
-            margin-top: 10px;
+            font-size: 12px;
+            margin-top: 8px;
         }
 
         .law-info h4 {
             color: var(--color-primary);
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
         }
 
         .file-upload-zone {
             border: 2px dashed var(--color-primary);
             border-radius: 8px;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             background: #f9f9f9;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .file-upload-zone:hover {
@@ -358,19 +373,9 @@
         }
 
         .file-upload-text {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
             margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
-            .bureau-list {
-                grid-template-columns: 1fr;
-            }
         }
 
         .hidden {
@@ -378,36 +383,35 @@
         }
 
         .char-count {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
-            margin-top: 5px;
+            margin-top: 3px;
         }
 
         .premium-badge {
             display: inline-block;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 10px 16px;
+            border-radius: 8px;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 10px;
             cursor: pointer;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: transform 0.1s ease-out;
             width: 100%;
             border: none;
             font-size: 14px;
         }
 
         .premium-badge:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
-        /* Premium Modal Styling */
         .premium-modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -418,11 +422,11 @@
             background: #ffffff;
             max-width: 420px;
             width: 90%;
-            border-radius: 10px;
-            padding: 20px 22px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 18px 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             font-size: 14px;
-            animation: slideUp 0.3s ease-out;
+            animation: slideUp 0.25s ease-out;
         }
 
         @keyframes slideUp {
@@ -437,63 +441,66 @@
         }
 
         .premium-modal-content h3 {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--color-primary);
             font-size: 18px;
         }
 
         .premium-modal-content p {
             color: #555;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             line-height: 1.5;
         }
 
         .premium-features-list {
             margin-left: 18px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #444;
+            font-size: 13px;
         }
 
         .premium-features-list li {
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .premium-pricing-box {
             border-radius: 8px;
             background: #f8f9ff;
-            padding: 10px 12px;
-            margin-bottom: 12px;
+            padding: 10px 10px;
+            margin-bottom: 10px;
             border: 1px solid #e0e3ff;
+            font-size: 13px;
         }
 
         .premium-pricing-box strong {
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .premium-pricing-box span {
-            font-size: 12px;
+            font-size: 11px;
             color: #666;
         }
 
         .premium-button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .premium-button-group button {
-            flex: 1;
+            width: 100%;
         }
 
         .premium-disclaimer {
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 11px;
             color: #999;
             line-height: 1.4;
         }
 
         .premium-status-badge {
-            font-size: 12px;
+            font-size: 11px;
             color: #28a745;
             margin-top: 6px;
             display: none;
@@ -501,6 +508,77 @@
 
         .premium-status-badge.active {
             display: block;
+        }
+
+        .small-help {
+            font-size: 11px;
+            color: #777;
+            margin-top: -4px;
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            header {
+                padding: 14px 10px;
+            }
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            header p {
+                font-size: 12px;
+            }
+
+            .sidebar,
+            .main-panel {
+                padding: 14px 12px;
+            }
+
+            .bureau-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .step {
+                font-size: 10px;
+                padding: 7px 4px;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            button,
+            .premium-badge {
+                width: 100%;
+            }
+
+            .letter-preview {
+                max-height: 320px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .step-indicator {
+                flex-direction: column;
+            }
+
+            .step {
+                font-size: 11px;
+            }
+
+            .bureau-list {
+                grid-template-columns: 1fr;
+            }
+
+            .letter-preview {
+                max-height: 280px;
+            }
         }
     </style>
 </head>
@@ -511,14 +589,44 @@
             <p>Credit Report Dispute Letter Generator - Local Storage, Zero Cloud Data</p>
             <div class="version-info">v1.0 | Production Ready</div>
             <div class="disclaimer-banner">
-                <strong>⚠️ LEGAL DISCLAIMER:</strong> This tool provides educational information and helps format dispute letters per the Fair Credit Reporting Act (FCRA). It is NOT legal advice. Results are not guaranteed. Consult an attorney for legal matters. The Fair Credit Reporting Act does not promise removal of accurate negative items.
+                <strong>⚠️ LEGAL DISCLAIMER:</strong> This tool provides educational
+                information and helps format dispute letters per the Fair Credit Reporting
+                Act (FCRA). It is NOT legal advice. Results are not guaranteed. Consult
+                an attorney for legal matters. The Fair Credit Reporting Act does not
+                promise removal of accurate negative items.
             </div>
-            <span class="version-badge free" id="versionBadge">FREE VERSION - 3 Disputes Max</span>
+            <span class="version-badge free" id="versionBadge">
+                FREE VERSION - 3 Disputes Max
+            </span>
         </header>
 
         <div class="main-content">
             <!-- SIDEBAR -->
             <aside class="sidebar">
+                <!-- Client Profiles / Local Accounts -->
+                <div class="form-section">
+                    <h3>👤 Client Profiles (Local)</h3>
+                    <p class="small-help">
+                        Save and load client details on this device. Free: 1 profile •
+                        Premium: unlimited.
+                    </p>
+                    <label for="profileLabel">Profile Name / Label</label>
+                    <input
+                        type="text"
+                        id="profileLabel"
+                        placeholder="e.g. Me, Client A, John S."
+                    />
+
+                    <label for="profileSelector">Load Saved Profile</label>
+                    <select id="profileSelector" onchange="loadSelectedProfile()">
+                        <option value="">No profile selected</option>
+                    </select>
+
+                    <button style="margin-top: 8px" onclick="saveCurrentProfile()">
+                        💾 Save Current Info to Profile
+                    </button>
+                </div>
+
                 <div class="form-section">
                     <h3>📍 Your Information</h3>
                     <label>State</label>
@@ -578,39 +686,76 @@
                     </select>
 
                     <label>Full Name</label>
-                    <input type="text" id="userName" placeholder="John Doe">
+                    <input type="text" id="userName" placeholder="John Doe" />
 
                     <label>Current Address</label>
-                    <input type="text" id="userAddress" placeholder="123 Main St, City, ST 12345">
+                    <input
+                        type="text"
+                        id="userAddress"
+                        placeholder="123 Main St, City, ST 12345"
+                    />
 
                     <label>Email</label>
-                    <input type="email" id="userEmail" placeholder="your@email.com">
+                    <input
+                        type="email"
+                        id="userEmail"
+                        placeholder="your@email.com"
+                    />
 
                     <label>Phone</label>
-                    <input type="tel" id="userPhone" placeholder="(555) 123-4567">
+                    <input
+                        type="tel"
+                        id="userPhone"
+                        placeholder="(555) 123-4567"
+                    />
                 </div>
 
                 <div class="form-section">
                     <h3>📋 Dispute Settings</h3>
-                    <label style="margin-bottom: 5px;">Send To Which Bureaus?</label>
+                    <label style="margin-bottom: 5px">Send To Which Bureaus?</label>
                     <div class="bureau-list">
                         <label class="bureau-checkbox">
-                            <input type="checkbox" id="bureauEquifax" checked onchange="updateBureauSelection()"> Equifax
+                            <input
+                                type="checkbox"
+                                id="bureauEquifax"
+                                checked
+                                onchange="updateBureauSelection()"
+                            />
+                            Equifax
                         </label>
                         <label class="bureau-checkbox">
-                            <input type="checkbox" id="bureauExperian" checked onchange="updateBureauSelection()"> Experian
+                            <input
+                                type="checkbox"
+                                id="bureauExperian"
+                                checked
+                                onchange="updateBureauSelection()"
+                            />
+                            Experian
                         </label>
                         <label class="bureau-checkbox">
-                            <input type="checkbox" id="bureauTransUnion" checked onchange="updateBureauSelection()"> TransUnion
+                            <input
+                                type="checkbox"
+                                id="bureauTransUnion"
+                                checked
+                                onchange="updateBureauSelection()"
+                            />
+                            TransUnion
                         </label>
                     </div>
 
-                    <label style="margin-top: 15px; margin-bottom: 8px;">Custom Letter Note (Optional)</label>
-                    <textarea id="customNote" placeholder="Add any specific notes or details..."></textarea>
-                    <div class="char-count"><span id="charCount">0</span>/500 characters</div>
+                    <label style="margin-top: 12px; margin-bottom: 6px">
+                        Custom Letter Note (Optional)
+                    </label>
+                    <textarea
+                        id="customNote"
+                        placeholder="Add any specific notes or details..."
+                    ></textarea>
+                    <div class="char-count">
+                        <span id="charCount">0</span>/500 characters
+                    </div>
 
-                    <div style="margin-top: 15px;">
-                        <label style="margin-bottom: 8px;">Dispute Type</label>
+                    <div style="margin-top: 12px">
+                        <label style="margin-bottom: 6px">Dispute Type</label>
                         <select id="disputeType" onchange="updateDisputeTemplate()">
                             <option value="inaccurate">Inaccurate Information</option>
                             <option value="notmine">Account Not Mine</option>
@@ -621,7 +766,7 @@
                     </div>
                 </div>
 
-                <div class="law-info" id="stateInfo" style="display: none;">
+                <div class="law-info" id="stateInfo" style="display: none">
                     <h4>⚖️ State Info</h4>
                     <p id="stateLawText"></p>
                 </div>
@@ -629,8 +774,16 @@
                 <!-- Premium Access Section -->
                 <div class="form-section">
                     <h3>⭐ Premium Access</h3>
-                    <p style="font-size: 13px; color: #555; margin-bottom: 8px;">
-                        Free users can dispute up to 3 items per batch. Upgrade to unlock unlimited disputes, saved profiles, and priority templates.
+                    <p
+                        style="
+                            font-size: 12px;
+                            color: #555;
+                            margin-bottom: 8px;
+                            line-height: 1.4;
+                        "
+                    >
+                        Free users can dispute up to 3 items per batch. Upgrade to
+                        unlock unlimited disputes and unlimited client profiles.
                     </p>
                     <button class="premium-badge" onclick="openPremiumModal()">
                         🔓 Upgrade to Premium - $4.99/mo
@@ -654,52 +807,127 @@
                 <div id="step1Section" class="form-section">
                     <h3>📄 Step 1: Paste or Upload Credit Report</h3>
                     <div class="alert alert-info">
-                        Upload a file or paste your credit report. All data stays on your device only - zero cloud storage.
+                        Upload a file or paste your credit report. All data stays on
+                        your device only - zero cloud storage.
                     </div>
 
                     <div class="file-upload-zone" id="fileUploadZone">
-                        <input type="file" id="fileInput" accept=".txt,.pdf,.doc,.docx" onchange="handleFileUpload(event)">
-                        <p class="file-upload-text">📁 Drag & drop file here or click to upload</p>
-                        <p style="font-size: 12px; color: #999; margin-top: 5px;">Supports: TXT, PDF, DOC, DOCX</p>
+                        <input
+                            type="file"
+                            id="fileInput"
+                            accept=".txt,.pdf,.doc,.docx"
+                            onchange="handleFileUpload(event)"
+                        />
+                        <p class="file-upload-text">
+                            📁 Tap to upload or drag & drop
+                        </p>
+                        <p
+                            style="
+                                font-size: 11px;
+                                color: #999;
+                                margin-top: 4px;
+                            "
+                        >
+                            Supports: TXT, PDF, DOC, DOCX
+                        </p>
                     </div>
 
                     <label>Or Paste Credit Report Text Manually</label>
-                    <textarea id="creditFileInput" placeholder="Paste your credit report here or manually describe disputed items...
+                    <textarea
+                        id="creditFileInput"
+                        placeholder="Paste your credit report here or manually describe disputed items...
 Example format:
 Account: Credit Card - #1234567890
 Date Opened: 01/2020
 Status: Late 30 days
-Creditor: Chase Bank"></textarea>
+Creditor: Chase Bank"
+                    ></textarea>
 
-                    <button onclick="parseCredits()">📊 Analyze Credit Report</button>
+                    <!-- Sample report buttons -->
+                    <div
+                        style="
+                            margin-top: 8px;
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 8px;
+                        "
+                    >
+                        <button
+                            class="btn-secondary"
+                            onclick="loadSampleReport('basic')"
+                        >
+                            🧪 Load Sample Report #1
+                        </button>
+                        <button
+                            class="btn-secondary"
+                            onclick="loadSampleReport('collections')"
+                        >
+                            🧪 Load Sample Report #2
+                        </button>
+                    </div>
+
+                    <button style="margin-top: 12px" onclick="parseCredits()">
+                        📊 Analyze Credit Report
+                    </button>
                 </div>
 
                 <!-- STEP 2: DISPUTE SELECTION -->
                 <div id="step2Section" class="form-section hidden">
                     <h3>✓ Step 2: Select Items to Dispute</h3>
                     <div class="alert alert-info">
-                        Select up to 3 items to dispute in the free version. Check account numbers match your records.
+                        Select up to 3 items to dispute in the free version. Premium
+                        users can dispute unlimited items in one batch.
                     </div>
 
                     <div id="disputesList"></div>
-                    <p style="font-size: 13px; color: #666; margin-top: 10px;">Selected: <strong id="selectedCount">0</strong>/3</p>
+                    <p
+                        style="
+                            font-size: 12px;
+                            color: #666;
+                            margin-top: 8px;
+                        "
+                    >
+                        Selected:
+                        <strong id="selectedCount">0</strong>/3
+                    </p>
 
-                    <button onclick="generateLetters()">Continue to Letters →</button>
-                    <button class="btn-secondary" onclick="resetFile()">Start Over</button>
+                    <button onclick="generateLetters()">
+                        Continue to Letters →
+                    </button>
+                    <button
+                        class="btn-secondary"
+                        style="margin-top: 8px"
+                        onclick="resetFile()"
+                    >
+                        Start Over
+                    </button>
                 </div>
 
                 <!-- STEP 3: LETTER GENERATION -->
                 <div id="step3Section" class="form-section hidden">
                     <h3>📝 Step 3: Dispute Letters Generated</h3>
                     <div class="alert alert-success">
-                        Your dispute letters are ready! Review below and download as PDF.
+                        Your dispute letters are ready! Review below and download as
+                        PDF.
                     </div>
 
                     <div id="lettersContainer"></div>
 
                     <button onclick="downloadAllPDFs()">📥 Download All PDFs</button>
-                    <button class="btn-secondary" onclick="downloadFollowupSchedule()">📅 Follow-up Schedule</button>
-                    <button class="btn-secondary" onclick="resetAll()">Create New Disputes</button>
+                    <button
+                        class="btn-secondary"
+                        style="margin-top: 8px"
+                        onclick="downloadFollowupSchedule()"
+                    >
+                        📅 Follow-up Schedule
+                    </button>
+                    <button
+                        class="btn-secondary"
+                        style="margin-top: 8px"
+                        onclick="resetAll()"
+                    >
+                        Create New Disputes
+                    </button>
                 </div>
             </main>
         </div>
@@ -710,34 +938,36 @@ Creditor: Chase Bank"></textarea>
         <div class="premium-modal-content">
             <h3>Upgrade to Dispute On Demand Pro</h3>
             <p>
-                Unlock unlimited disputes, saved profiles, and faster workflows. Perfect for power users, credit repair hustlers, and agencies managing multiple cases.
+                Unlock unlimited disputes per batch and unlimited local client
+                profiles. Perfect for power users and agencies managing multiple
+                clients.
             </p>
 
             <ul class="premium-features-list">
                 <li>✓ Unlimited dispute items per batch</li>
-                <li>✓ Save your name, address, and custom notes</li>
+                <li>✓ Unlimited saved client profiles on this device</li>
                 <li>✓ Priority templates and follow-up schedules</li>
                 <li>✓ Batch processing for multiple clients</li>
                 <li>✓ Priority support access</li>
             </ul>
 
             <div class="premium-pricing-box">
-                <strong>$4.99 / month</strong><br>
+                <strong>$4.99 / month</strong><br />
                 <span>Billed securely via Stripe. Cancel anytime. No hidden fees.</span>
             </div>
 
             <div class="premium-button-group">
-                <button onclick="startStripeCheckout()">
-                    💳 Upgrade with Stripe
-                </button>
+                <button onclick="startStripeCheckout()">💳 Upgrade with Stripe</button>
                 <button class="btn-secondary" onclick="activateLocalPremium()">
                     🧪 Dev: Unlock Test Mode
                 </button>
             </div>
 
             <p class="premium-disclaimer">
-                <strong>Note:</strong> "Upgrade with Stripe" will send you to a secure checkout. After payment, you'll be redirected back here and Premium will unlock on this device.<br>
-                The Dev/Test button is for testing without real payments.
+                <strong>Note:</strong> "Upgrade with Stripe" sends you to a secure
+                checkout. After payment, you’ll be redirected back here and Premium will
+                unlock on this device. The Dev/Test button is for testing without real
+                payments.
             </p>
         </div>
     </div>
@@ -799,128 +1029,259 @@ Creditor: Chase Bank"></textarea>
         };
 
         const bureauAddresses = {
-            equifax: "Equifax Disclosure Department\nP.O. Box 740241\nAtlanta, GA 30374-0241",
-            experian: "Experian National Consumer Assistance Center\n1 Experian Way\nAllen, TX 75013",
-            transunion: "TransUnion Consumer Dispute Center\nP.O. Box 2000\nChester, PA 19022-2000"
+            equifax:
+                "Equifax Disclosure Department\nP.O. Box 740241\nAtlanta, GA 30374-0241",
+            experian:
+                "Experian National Consumer Assistance Center\n1 Experian Way\nAllen, TX 75013",
+            transunion:
+                "TransUnion Consumer Dispute Center\nP.O. Box 2000\nChester, PA 19022-2000"
         };
 
         let parsedDisputes = [];
         let selectedDisputes = [];
         let appVersion = "free";
 
-        // 🔑 STRIPE PAYMENT LINK (REPLACE THIS WITH YOUR REAL LINK)
-        // Example: "https://buy.stripe.com/test_123abc..."
+        // 🔑 STRIPE PAYMENT LINK (REPLACE WITH YOUR REAL LINK)
         const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/YOUR_PAYMENT_LINK_HERE";
 
-        // ================================
-        // PREMIUM FEATURE MANAGEMENT
-        // ================================
-
-        // Called after Stripe redirect: /?premium=1
+        // PREMIUM
         function checkStripePremiumCallback() {
             const params = new URLSearchParams(window.location.search);
-            if (params.get('premium') === '1') {
-                // Mark premium in localStorage
-                localStorage.setItem('dod_premium_active', 'true');
-                // Clean URL so ?premium=1 disappears
+            if (params.get("premium") === "1") {
+                localStorage.setItem("dod_premium_active", "true");
                 if (window.history && window.history.replaceState) {
-                    window.history.replaceState({}, document.title, window.location.pathname);
+                    window.history.replaceState(
+                        {},
+                        document.title,
+                        window.location.pathname
+                    );
                 }
             }
         }
 
-        // Load premium status on page load
         function loadPremiumStatus() {
-            const stored = localStorage.getItem('dod_premium_active');
-            if (stored === 'true') {
-                appVersion = 'premium';
-                const badge = document.getElementById('versionBadge');
+            const stored = localStorage.getItem("dod_premium_active");
+            if (stored === "true") {
+                appVersion = "premium";
+                const badge = document.getElementById("versionBadge");
                 if (badge) {
-                    badge.textContent = 'PREMIUM VERSION - Unlimited Disputes';
-                    badge.classList.remove('free');
-                    badge.classList.add('premium');
+                    badge.textContent = "PREMIUM VERSION - Unlimited Disputes";
+                    badge.classList.remove("free");
+                    badge.classList.add("premium");
                 }
-                const statusText = document.getElementById('premiumStatusText');
-                if (statusText) statusText.classList.add('active');
+                const statusText = document.getElementById("premiumStatusText");
+                if (statusText) statusText.classList.add("active");
             }
         }
 
-        // Stripe checkout redirect
         function startStripeCheckout() {
-            if (!STRIPE_PAYMENT_LINK || STRIPE_PAYMENT_LINK.includes("YOUR_PAYMENT_LINK_HERE")) {
-                alert("Stripe Payment Link not configured yet.\n\nLog into Stripe, create a Payment Link, then paste it into STRIPE_PAYMENT_LINK in the script.");
+            if (
+                !STRIPE_PAYMENT_LINK ||
+                STRIPE_PAYMENT_LINK.includes("YOUR_PAYMENT_LINK_HERE")
+            ) {
+                alert(
+                    "Stripe Payment Link not configured yet.\n\nLog into Stripe, create a Payment Link, then paste it into STRIPE_PAYMENT_LINK in the script."
+                );
                 return;
             }
             window.location.href = STRIPE_PAYMENT_LINK;
         }
 
-        // Open premium modal
         function openPremiumModal() {
-            const modal = document.getElementById('premiumModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-            }
+            const modal = document.getElementById("premiumModal");
+            if (modal) modal.classList.remove("hidden");
         }
 
-        // Close premium modal
         function closePremiumModal() {
-            const modal = document.getElementById('premiumModal');
-            if (modal) {
-                modal.classList.add('hidden');
-            }
+            const modal = document.getElementById("premiumModal");
+            if (modal) modal.classList.add("hidden");
         }
 
-        // Activate premium (dev/test mode)
         function activateLocalPremium() {
-            localStorage.setItem('dod_premium_active', 'true');
-            appVersion = 'premium';
-            
-            // Update UI
-            const badge = document.getElementById('versionBadge');
+            localStorage.setItem("dod_premium_active", "true");
+            appVersion = "premium";
+            const badge = document.getElementById("versionBadge");
             if (badge) {
-                badge.textContent = 'PREMIUM VERSION - Unlimited Disputes';
-                badge.classList.remove('free');
-                badge.classList.add('premium');
+                badge.textContent = "PREMIUM VERSION - Unlimited Disputes";
+                badge.classList.remove("free");
+                badge.classList.add("premium");
             }
-            
-            const statusText = document.getElementById('premiumStatusText');
-            if (statusText) statusText.classList.add('active');
-            
-            // Close modal
+            const statusText = document.getElementById("premiumStatusText");
+            if (statusText) statusText.classList.add("active");
             closePremiumModal();
-            
-            // Show confirmation
-            alert('🎉 Premium unlocked on this device!\n\nYou now have:\n✓ Unlimited disputes per batch\n✓ Saved profiles\n✓ Priority templates\n\nRefresh the page to see all premium features.');
+            alert(
+                "🎉 Premium unlocked on this device!\n\nYou now have:\n✓ Unlimited disputes per batch\n✓ Unlimited local profiles\n✓ Priority workflow features."
+            );
         }
 
-        // Clear premium status (for testing)
         function clearPremiumStatus() {
-            localStorage.removeItem('dod_premium_active');
+            localStorage.removeItem("dod_premium_active");
             location.reload();
         }
 
-        // ================================
-        // CORE APP LOGIC
-        // ================================
+        // PROFILES
+        function getStoredProfiles() {
+            const raw = localStorage.getItem("dod_profiles");
+            if (!raw) return {};
+            try {
+                return JSON.parse(raw) || {};
+            } catch {
+                return {};
+            }
+        }
 
-        // File Upload Handler with Drag & Drop
-        const fileUploadZone = document.getElementById('fileUploadZone');
-        const fileInput = document.getElementById('fileInput');
+        function saveProfilesToStorage(profiles) {
+            localStorage.setItem("dod_profiles", JSON.stringify(profiles));
+        }
 
-        fileUploadZone.addEventListener('click', () => fileInput.click());
+        function slugifyLabel(label) {
+            return label
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, "_")
+                .replace(/[^a-z0-9_]/g, "");
+        }
 
-        fileUploadZone.addEventListener('dragover', (e) => {
+        function renderProfileSelector() {
+            const profiles = getStoredProfiles();
+            const selector = document.getElementById("profileSelector");
+            if (!selector) return;
+            const activeId = localStorage.getItem("dod_active_profile") || "";
+
+            selector.innerHTML = '<option value="">No profile selected</option>';
+
+            Object.keys(profiles).forEach((id) => {
+                const opt = document.createElement("option");
+                opt.value = id;
+                opt.textContent = profiles[id].label || id;
+                if (id === activeId) opt.selected = true;
+                selector.appendChild(opt);
+            });
+        }
+
+        function saveCurrentProfile() {
+            const labelInput = document.getElementById("profileLabel");
+            const label = (labelInput.value || "").trim();
+            if (!label) {
+                alert("Please enter a profile name/label before saving.");
+                return;
+            }
+
+            const profiles = getStoredProfiles();
+            const profileId = slugifyLabel(label) || "profile_" + Date.now();
+
+            const existingIds = Object.keys(profiles);
+            const isNewProfile = !profiles[profileId];
+
+            if (appVersion === "free" && isNewProfile && existingIds.length >= 1) {
+                alert(
+                    "Free version is limited to 1 saved profile.\n\nUpgrade to Premium to unlock unlimited client profiles."
+                );
+                openPremiumModal();
+                return;
+            }
+
+            profiles[profileId] = {
+                label: label,
+                name: document.getElementById("userName").value || "",
+                address: document.getElementById("userAddress").value || "",
+                email: document.getElementById("userEmail").value || "",
+                phone: document.getElementById("userPhone").value || "",
+                note: document.getElementById("customNote").value || ""
+            };
+
+            saveProfilesToStorage(profiles);
+            localStorage.setItem("dod_active_profile", profileId);
+            renderProfileSelector();
+            alert("✅ Profile saved locally on this device.");
+        }
+
+        function loadSelectedProfile() {
+            const selector = document.getElementById("profileSelector");
+            if (!selector) return;
+            const selectedId = selector.value;
+            if (!selectedId) return;
+
+            const profiles = getStoredProfiles();
+            const profile = profiles[selectedId];
+            if (!profile) return;
+
+            document.getElementById("profileLabel").value = profile.label || "";
+            document.getElementById("userName").value = profile.name || "";
+            document.getElementById("userAddress").value = profile.address || "";
+            document.getElementById("userEmail").value = profile.email || "";
+            document.getElementById("userPhone").value = profile.phone || "";
+            document.getElementById("customNote").value = profile.note || "";
+            document.getElementById("charCount").textContent =
+                (profile.note || "").length;
+
+            localStorage.setItem("dod_active_profile", selectedId);
+        }
+
+        // SAMPLE REPORTS
+        function loadSampleReport(type) {
+            let sample = "";
+
+            if (type === "collections") {
+                sample = `Account: Collection Account - #555666777
+Date Opened: 03/2019
+Status: Collection
+Creditor: ABC Collections
+Notes: Reporting as open collection, but debt was settled in 2021.
+
+Account: Medical Collection - #888999000
+Date Opened: 02/2020
+Status: Collection
+Creditor: MedPay Services
+Notes: Reporting without proper itemization or documentation.
+
+Account: Telecom Collection - #444333222
+Date Opened: 09/2018
+Status: Collection
+Creditor: XYZ Wireless
+Notes: Account was never opened by consumer. Possible identity theft.`;
+            } else {
+                sample = `Account: Credit Card - #1234567890
+Date Opened: 01/2020
+Status: Late 30 days
+Creditor: Chase Bank
+Notes: Reported 30 days late in 05/2023 but payment was made on time.
+
+Account: Auto Loan - #9876543210
+Date Opened: 06/2018
+Status: Charged Off
+Creditor: Capital One Auto
+Notes: Balance shows incorrect amount and wrong dates reported.
+
+Account: Personal Loan - #222333444
+Date Opened: 11/2019
+Status: Late 60 days
+Creditor: Local Credit Union
+Notes: Duplicate reporting of the same account appears on report.`;
+            }
+
+            const textarea = document.getElementById("creditFileInput");
+            textarea.value = sample;
+        }
+
+        // CORE APP
+        const fileUploadZone = document.getElementById("fileUploadZone");
+        const fileInput = document.getElementById("fileInput");
+
+        fileUploadZone.addEventListener("click", () => fileInput.click());
+
+        fileUploadZone.addEventListener("dragover", (e) => {
             e.preventDefault();
-            fileUploadZone.classList.add('dragover');
+            fileUploadZone.classList.add("dragover");
         });
 
-        fileUploadZone.addEventListener('dragleave', () => {
-            fileUploadZone.classList.remove('dragover');
+        fileUploadZone.addEventListener("dragleave", () => {
+            fileUploadZone.classList.remove("dragover");
         });
 
-        fileUploadZone.addEventListener('drop', (e) => {
+        fileUploadZone.addEventListener("drop", (e) => {
             e.preventDefault();
-            fileUploadZone.classList.remove('dragover');
+            fileUploadZone.classList.remove("dragover");
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 handleFileUpload({ target: { files: files } });
@@ -936,72 +1297,93 @@ Creditor: Chase Bank"></textarea>
 
             reader.onload = (e) => {
                 const content = e.target.result;
-                document.getElementById('creditFileInput').value = content;
-                fileUploadZone.style.borderColor = 'var(--color-success)';
-                fileUploadZone.style.background = '#e8f5e9';
+                document.getElementById("creditFileInput").value = content;
+                fileUploadZone.style.borderColor = "var(--color-success)";
+                fileUploadZone.style.background = "#e8f5e9";
             };
 
             reader.readAsText(file);
         }
 
         function updateDisputeTemplate() {
-            console.log('Dispute type changed to:', document.getElementById('disputeType').value);
+            console.log(
+                "Dispute type changed to:",
+                document.getElementById("disputeType").value
+            );
         }
 
-        document.getElementById('customNote').addEventListener('input', function() {
-            document.getElementById('charCount').textContent = this.value.length;
-        });
+        document
+            .getElementById("customNote")
+            .addEventListener("input", function () {
+                document.getElementById("charCount").textContent =
+                    this.value.length;
+            });
 
         function updateStateInfo() {
-            const state = document.getElementById('stateSelect').value;
-            const stateInfoDiv = document.getElementById('stateInfo');
-            const stateLawText = document.getElementById('stateLawText');
+            const state = document.getElementById("stateSelect").value;
+            const stateInfoDiv = document.getElementById("stateInfo");
+            const stateLawText = document.getElementById("stateLawText");
 
             if (state && stateLaws[state]) {
-                stateInfoDiv.style.display = 'block';
+                stateInfoDiv.style.display = "block";
                 stateLawText.textContent = stateLaws[state];
             } else {
-                stateInfoDiv.style.display = 'none';
+                stateInfoDiv.style.display = "none";
             }
         }
 
         function updateBureauSelection() {
-            const checkboxes = document.querySelectorAll('.bureau-checkbox input');
-            checkboxes.forEach(checkbox => {
-                const parent = checkbox.closest('.bureau-checkbox');
+            const checkboxes = document.querySelectorAll(
+                ".bureau-checkbox input"
+            );
+            checkboxes.forEach((checkbox) => {
+                const parent = checkbox.closest(".bureau-checkbox");
                 if (checkbox.checked) {
-                    parent.classList.add('checked');
+                    parent.classList.add("checked");
                 } else {
-                    parent.classList.remove('checked');
+                    parent.classList.remove("checked");
                 }
             });
         }
 
         function parseCredits() {
-            const input = document.getElementById('creditFileInput').value;
-            
+            const input = document.getElementById("creditFileInput").value;
+
             if (!input.trim()) {
-                alert('Please paste or upload your credit file information.');
+                alert(
+                    "Please paste or upload your credit file information, or load a sample report."
+                );
                 return;
             }
 
             parsedDisputes = [];
-            const lines = input.split('\n');
+            const lines = input.split("\n");
             let currentAccount = {};
 
             lines.forEach((line) => {
                 line = line.trim();
-                
-                if (line.toLowerCase().includes('account')) {
+
+                if (line.toLowerCase().startsWith("account")) {
                     if (Object.keys(currentAccount).length > 0) {
                         parsedDisputes.push(currentAccount);
                     }
                     currentAccount = {
-                        id: 'ACC-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                        id:
+                            "ACC-" +
+                            Math.random()
+                                .toString(36)
+                                .substr(2, 9)
+                                .toUpperCase(),
                         description: line
                     };
-                } else if (line.toLowerCase().includes('status') || line.toLowerCase().includes('late')) {
+                } else if (
+                    line.toLowerCase().includes("status") ||
+                    line.toLowerCase().includes("late") ||
+                    line.toLowerCase().includes("charged off")
+                ) {
                     currentAccount.status = line;
+                } else if (line.toLowerCase().includes("creditor")) {
+                    currentAccount.creditor = line;
                 } else if (line.match(/\d{4,}/)) {
                     currentAccount.accountNumber = line.match(/\d{4,}/)[0];
                 }
@@ -1014,22 +1396,22 @@ Creditor: Chase Bank"></textarea>
             if (parsedDisputes.length === 0) {
                 parsedDisputes = [
                     {
-                        id: 'DISP-001',
-                        description: 'Inaccurate Account Information',
-                        accountNumber: '****1234',
-                        status: 'Parsed from input'
+                        id: "DISP-001",
+                        description: "Inaccurate Account Information",
+                        accountNumber: "****1234",
+                        status: "Parsed from input"
                     },
                     {
-                        id: 'DISP-002',
-                        description: 'Late Payment Reporting Error',
-                        accountNumber: '****5678',
-                        status: 'Parsed from input'
+                        id: "DISP-002",
+                        description: "Late Payment Reporting Error",
+                        accountNumber: "****5678",
+                        status: "Parsed from input"
                     },
                     {
-                        id: 'DISP-003',
-                        description: 'Account Not Mine',
-                        accountNumber: '****9012',
-                        status: 'Parsed from input'
+                        id: "DISP-003",
+                        description: "Account Not Mine",
+                        accountNumber: "****9012",
+                        status: "Parsed from input"
                     }
                 ];
             }
@@ -1038,70 +1420,76 @@ Creditor: Chase Bank"></textarea>
         }
 
         function displayDisputes() {
-            const disputesList = document.getElementById('disputesList');
-            disputesList.innerHTML = '';
+            const disputesList = document.getElementById("disputesList");
+            disputesList.innerHTML = "";
 
             parsedDisputes.forEach((dispute, index) => {
-                const div = document.createElement('div');
-                div.className = 'dispute-item';
+                const div = document.createElement("div");
+                div.className = "dispute-item";
                 div.innerHTML = `
                     <label style="cursor: pointer; margin-bottom: 0;">
                         <input type="checkbox" value="${index}" onchange="updateSelectedCount(event)">
                         <strong>${dispute.description}</strong>
                     </label>
                     <div class="account-info">
-                        ID: ${dispute.id} | Account: ${dispute.accountNumber || 'Not specified'} | Status: ${dispute.status}
+                        ID: ${dispute.id} | Account: ${
+                    dispute.accountNumber || "Not specified"
+                } | Status: ${dispute.status || "Unknown"}
                     </div>
                 `;
                 disputesList.appendChild(div);
             });
 
-            document.getElementById('step1Section').classList.add('hidden');
-            document.getElementById('step2Section').classList.remove('hidden');
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step1').classList.add('completed');
-            document.getElementById('step2').classList.add('active');
+            document.getElementById("step1Section").classList.add("hidden");
+            document.getElementById("step2Section").classList.remove("hidden");
+            document.getElementById("step1").classList.remove("active");
+            document.getElementById("step1").classList.add("completed");
+            document.getElementById("step2").classList.add("active");
         }
 
         function updateSelectedCount(event) {
-            const checkboxes = document.querySelectorAll('#disputesList input[type="checkbox"]');
-            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const checkboxes = document.querySelectorAll(
+                "#disputesList input[type='checkbox']"
+            );
+            const checked = Array.from(checkboxes).filter(
+                (cb) => cb.checked
+            ).length;
 
-            // Premium users have unlimited disputes
-            if (appVersion === 'free' && checked > 3) {
-                alert('Free version limited to 3 disputes.\n\nClick "Upgrade to Premium" to unlock unlimited disputes and save your profiles.');
+            if (appVersion === "free" && checked > 3) {
+                alert(
+                    "Free version limited to 3 disputes.\n\nClick 'Upgrade to Premium' to unlock unlimited disputes and unlimited profiles."
+                );
                 if (event && event.target) {
                     event.target.checked = false;
                 }
+                openPremiumModal();
                 return;
             }
 
-            // Update counter display
-            const maxDisputes = appVersion === 'premium' ? '∞' : '3';
-            document.getElementById('selectedCount').textContent = checked;
-            
-            // Premium indicator
-            if (appVersion === 'premium' && checked > 3) {
-                const p = document.querySelector('p[style*="margin-top: 10px"]');
-                if (p) p.style.color = '#6f42c1';
-            }
+            document.getElementById("selectedCount").textContent = checked;
         }
 
         function generateLetters() {
-            const checkboxes = document.querySelectorAll('#disputesList input[type="checkbox"]:checked');
-            selectedDisputes = Array.from(checkboxes).map(cb => parsedDisputes[cb.value]);
+            const checkboxes = document.querySelectorAll(
+                "#disputesList input[type='checkbox']:checked"
+            );
+            selectedDisputes = Array.from(checkboxes).map(
+                (cb) => parsedDisputes[cb.value]
+            );
 
             if (selectedDisputes.length === 0) {
-                alert('Please select at least one dispute.');
+                alert("Please select at least one dispute.");
                 return;
             }
 
-            const userName = document.getElementById('userName').value;
-            const userAddress = document.getElementById('userAddress').value;
-            const state = document.getElementById('stateSelect').value;
+            const userName = document.getElementById("userName").value;
+            const userAddress = document.getElementById("userAddress").value;
+            const state = document.getElementById("stateSelect").value;
 
             if (!userName || !userAddress || !state) {
-                alert('Please fill in your name, address, and select a state.');
+                alert(
+                    "Please fill in your name, address, and select a state before generating letters."
+                );
                 return;
             }
 
@@ -1109,15 +1497,15 @@ Creditor: Chase Bank"></textarea>
         }
 
         function createDisputeLetter(bureau, dispute, state) {
-            const userName = document.getElementById('userName').value;
-            const userAddress = document.getElementById('userAddress').value;
-            const userEmail = document.getElementById('userEmail').value;
-            const userPhone = document.getElementById('userPhone').value;
-            const customNote = document.getElementById('customNote').value;
-            const todayDate = new Date().toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+            const userName = document.getElementById("userName").value;
+            const userAddress = document.getElementById("userAddress").value;
+            const userEmail = document.getElementById("userEmail").value;
+            const userPhone = document.getElementById("userPhone").value;
+            const customNote = document.getElementById("customNote").value;
+            const todayDate = new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
             });
 
             const letter = `${bureau.toUpperCase()} DISPUTE LETTER
@@ -1139,9 +1527,9 @@ I am writing to formally dispute inaccurate information on my credit report. Per
 
 DISPUTED ITEM:
 ${dispute.description}
-Account Number: ${dispute.accountNumber || 'Not Provided'}
+Account Number: ${dispute.accountNumber || "Not Provided"}
 Account ID: ${dispute.id}
-Status: ${dispute.status}
+Status: ${dispute.status || "Not Provided"}
 
 REASON FOR DISPUTE:
 This item is inaccurate and does not represent my actual account status. I have carefully reviewed my records and this information is either incorrect, incomplete, or cannot be verified.
@@ -1153,8 +1541,9 @@ I request that you:
 4. Provide me with written notice of your investigation results
 5. Send a corrected copy of my credit report to me and to any creditor who received my report in the past 6 months
 
-${customNote ? `ADDITIONAL INFORMATION:\n${customNote}\n` : ''}
-Please direct your response and any corrected credit report to:
+${
+    customNote ? `ADDITIONAL INFORMATION:\n${customNote}\n` : ""
+}Please direct your response and any corrected credit report to:
 
 ${userName}
 ${userAddress}
@@ -1173,28 +1562,35 @@ Generated by Dispute On Demand Pro v1.0 - Local Processing, Zero Cloud Storage`;
         }
 
         function displayLetters() {
-            const lettersContainer = document.getElementById('lettersContainer');
-            lettersContainer.innerHTML = '';
+            const lettersContainer = document.getElementById("lettersContainer");
+            lettersContainer.innerHTML = "";
 
             const bureaus = [];
-            if (document.getElementById('bureauEquifax').checked) bureaus.push('Equifax');
-            if (document.getElementById('bureauExperian').checked) bureaus.push('Experian');
-            if (document.getElementById('bureauTransUnion').checked) bureaus.push('TransUnion');
+            if (document.getElementById("bureauEquifax").checked)
+                bureaus.push("Equifax");
+            if (document.getElementById("bureauExperian").checked)
+                bureaus.push("Experian");
+            if (document.getElementById("bureauTransUnion").checked)
+                bureaus.push("TransUnion");
 
-            const state = document.getElementById('stateSelect').value;
+            const state = document.getElementById("stateSelect").value;
 
             selectedDisputes.forEach((dispute, dispIdx) => {
-                bureaus.forEach(bureau => {
+                bureaus.forEach((bureau) => {
                     const letter = createDisputeLetter(bureau, dispute, state);
 
-                    const letterDiv = document.createElement('div');
-                    letterDiv.style.marginBottom = '20px';
+                    const letterDiv = document.createElement("div");
+                    letterDiv.style.marginBottom = "16px";
                     letterDiv.innerHTML = `
-                        <h4 style="color: var(--color-primary); margin-bottom: 10px;">
+                        <h4 style="color: var(--color-primary); margin-bottom: 6px; font-size: 14px;">
                             Letter ${dispIdx + 1} - ${bureau}
                         </h4>
-                        <div class="letter-preview">${letter.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-                        <button onclick="downloadSinglePDF('${bureau}', '${dispIdx + 1}', this)" style="margin-top: 10px;">
+                        <div class="letter-preview">${letter
+                            .replace(/</g, "&lt;")
+                            .replace(/>/g, "&gt;")}</div>
+                        <button onclick="downloadSinglePDF('${bureau}', '${
+                        dispIdx + 1
+                    }', this)" style="margin-top: 8px;">
                             📥 Download ${bureau} PDF
                         </button>
                     `;
@@ -1202,11 +1598,11 @@ Generated by Dispute On Demand Pro v1.0 - Local Processing, Zero Cloud Storage`;
                 });
             });
 
-            document.getElementById('step2Section').classList.add('hidden');
-            document.getElementById('step3Section').classList.remove('hidden');
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step2').classList.add('completed');
-            document.getElementById('step3').classList.add('active');
+            document.getElementById("step2Section").classList.add("hidden");
+            document.getElementById("step3Section").classList.remove("hidden");
+            document.getElementById("step2").classList.remove("active");
+            document.getElementById("step2").classList.add("completed");
+            document.getElementById("step3").classList.add("active");
         }
 
         function downloadSinglePDF(bureau, letterNum, btn) {
@@ -1214,15 +1610,17 @@ Generated by Dispute On Demand Pro v1.0 - Local Processing, Zero Cloud Storage`;
             const opt = {
                 margin: 10,
                 filename: `Dispute_Letter_${bureau}_${letterNum}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
+                image: { type: "jpeg", quality: 0.98 },
                 html2canvas: { scale: 2 },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                jsPDF: { orientation: "portrait", unit: "mm", format: "a4" }
             };
             html2pdf().set(opt).from(element).save();
         }
 
         function downloadAllPDFs() {
-            const buttons = document.querySelectorAll('#lettersContainer button');
+            const buttons = document.querySelectorAll(
+                "#lettersContainer button"
+            );
             buttons.forEach((btn, i) => {
                 setTimeout(() => {
                     btn.click();
@@ -1231,7 +1629,7 @@ Generated by Dispute On Demand Pro v1.0 - Local Processing, Zero Cloud Storage`;
         }
 
         function downloadFollowupSchedule() {
-            const state = document.getElementById('stateSelect').value;
+            const state = document.getElementById("stateSelect").value;
             const scheduleText = `DISPUTE FOLLOW-UP SCHEDULE
 Generated: ${new Date().toLocaleDateString()}
 
@@ -1247,7 +1645,9 @@ Experian: ${bureauAddresses.experian}
 TransUnion: ${bureauAddresses.transunion}
 
 STATE-SPECIFIC NOTES (${state}):
-${stateLaws[state] || 'Follow federal FCRA guidelines (30-day response)'}
+${
+    stateLaws[state] || "Follow federal FCRA guidelines (30-day response)"
+}
 
 CHECKLIST:
 ☐ Make copies of all dispute letters
@@ -1267,17 +1667,17 @@ NEXT STEPS:
 
 Remember: This is a process that may take 2-3 rounds for best results.`;
 
-            const element = document.createElement('pre');
+            const element = document.createElement("pre");
             element.textContent = scheduleText;
-            element.style.display = 'none';
+            element.style.display = "none";
             document.body.appendChild(element);
 
             const opt = {
                 margin: 10,
                 filename: `Dispute_FollowUp_Schedule_${state}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
+                image: { type: "jpeg", quality: 0.98 },
                 html2canvas: { scale: 2 },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+                jsPDF: { orientation: "portrait", unit: "mm", format: "a4" }
             };
 
             html2pdf().set(opt).from(element).save();
@@ -1285,42 +1685,47 @@ Remember: This is a process that may take 2-3 rounds for best results.`;
         }
 
         function resetFile() {
-            document.getElementById('creditFileInput').value = '';
-            document.getElementById('step2Section').classList.add('hidden');
-            document.getElementById('step1Section').classList.remove('hidden');
+            document.getElementById("creditFileInput").value = "";
+            document.getElementById("step2Section").classList.add("hidden");
+            document.getElementById("step1Section").classList.remove("hidden");
             parsedDisputes = [];
             selectedDisputes = [];
-            fileUploadZone.style.borderColor = 'var(--color-primary)';
-            fileUploadZone.style.background = '#f9f9f9';
+            fileUploadZone.style.borderColor = "var(--color-primary)";
+            fileUploadZone.style.background = "#f9f9f9";
+            document.getElementById("selectedCount").textContent = "0";
         }
 
         function resetAll() {
-            document.getElementById('creditFileInput').value = '';
-            document.getElementById('userName').value = '';
-            document.getElementById('userAddress').value = '';
-            document.getElementById('userEmail').value = '';
-            document.getElementById('userPhone').value = '';
-            document.getElementById('customNote').value = '';
-            document.getElementById('stateSelect').value = '';
-            document.getElementById('charCount').textContent = '0';
-            
+            document.getElementById("creditFileInput").value = "";
+            document.getElementById("userName").value = "";
+            document.getElementById("userAddress").value = "";
+            document.getElementById("userEmail").value = "";
+            document.getElementById("userPhone").value = "";
+            document.getElementById("customNote").value = "";
+            document.getElementById("stateSelect").value = "";
+            document.getElementById("charCount").textContent = "0";
+
             parsedDisputes = [];
             selectedDisputes = [];
-            
-            document.getElementById('step1Section').classList.remove('hidden');
-            document.getElementById('step2Section').classList.add('hidden');
-            document.getElementById('step3Section').classList.add('hidden');
 
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active', 'completed'));
-            document.getElementById('step1').classList.add('active');
-            fileUploadZone.style.borderColor = 'var(--color-primary)';
-            fileUploadZone.style.background = '#f9f9f9';
+            document.getElementById("step1Section").classList.remove("hidden");
+            document.getElementById("step2Section").classList.add("hidden");
+            document.getElementById("step3Section").classList.add("hidden");
+
+            document
+                .querySelectorAll(".step")
+                .forEach((s) => s.classList.remove("active", "completed"));
+            document.getElementById("step1").classList.add("active");
+            fileUploadZone.style.borderColor = "var(--color-primary)";
+            fileUploadZone.style.background = "#f9f9f9";
+            document.getElementById("selectedCount").textContent = "0";
         }
 
-        // Initialize premium + bureaus on page load
+        // INIT
         checkStripePremiumCallback();
         loadPremiumStatus();
         updateBureauSelection();
+        renderProfileSelector();
     </script>
 </body>
 </html>

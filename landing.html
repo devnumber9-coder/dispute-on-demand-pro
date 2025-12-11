@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>Dispute On Demand Pro – Credit Repair Automation</title>
+  <style>
+    :root {
+      --color-primary: #1f8ba0;
+      --color-primary-dark: #166d7f;
+      --color-accent: #6f42c1;
+      --color-bg: #f3f6fb;
+      --color-text: #1a1a1a;
+      --color-muted: #6b7280;
+      --radius-lg: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        sans-serif;
+      background: radial-gradient(circle at top, #e2f3ff 0, #f4f7fb 45%, #f9fafb 100%);
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0 4px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .brand-text-title {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      color: var(--color-muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-nav {
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #d1d5db;
+      color: #374151;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+    }
+
+    /* Hero */
+    .hero {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(31, 139, 160, 0.08);
+      color: var(--color-primary-dark);
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .hero-title span {
+      color: var(--color-primary);
+    }
+
+    .hero-subtitle {
+      font-size: 13px;
+      color: var(--color-muted);
+      margin-bottom: 14px;
+    }
+
+    .hero-list {
+      list-style: none;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #374151;
+    }
+
+    .hero-list li {
+      margin-bottom: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .hero-list li span {
+      font-size: 14px;
+      margin-top: 1px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-lg {
+      padding: 10px 18px;
+      font-size: 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-contrast {
+      background: #fff;
+      border: 1px solid #d1d5db;
+      color: #111827;
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--color-muted);
+    }
+
+    .hero-right {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 16px 14px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    .pill-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #f3e8ff;
+      color: #6b21a8;
+      margin-bottom: 6px;
+    }
+
+    .hero-form-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .hero-form-sub {
+      font-size: 11px;
+      color: var(--color-muted);
+      margin-bottom: 10px;
+    }
+
+    .form-field {
+      margin-bottom: 10px;
+    }
+
+    .form-field label {
+      display: block;
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+
+    .form-field input {
+      width: 100%;
+      padding: 8px 9px;
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+    }
+
+    .form-field input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 1px rgba(31, 139, 160, 0.2);
+    }
+
+    .coupon-pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.08);
+      color: #047857;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .btn-full {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      color: #fff;
+    }
+
+    .btn-full:hover {
+      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
+    }
+
+    .small-note {
+      font-size: 10px;
+      color: var(--color-muted);
+      margin-top: 6px;
+    }
+
+    .success-msg {
+      display: none;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #047857;
+      background: #ecfdf5;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .success-msg span {
+      font-weight: 700;
+    }
+
+    /* Social proof / features */
+    .section {
+      margin-top: 28px;
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 16px 14px;
+      box-shadow: 0 8px 26px rgba(15, 23, 42, 0.05);
+      border: 1px solid #e5e7eb;
+    }
+
+    .section-title {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--color-muted);
+      margin-bottom: 14px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .feature-card {
+      padding: 10px 10px;
+      border-radius: 12px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
+
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .feature-card p {
+      color: #4b5563;
+      font-size: 12px;
+    }
+
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+
+    .faq-item {
+      margin-bottom: 10px;
+    }
+
+    .faq-q {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .faq-a {
+      font-size: 12px;
+      color: #4b5563;
+    }
+
+    .testimonial-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 10px 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 12px;
+    }
+
+    .testimonial-quote {
+      font-style: italic;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .testimonial-author {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #9ca3af;
+      padding: 16px 0 8px;
+    }
+
+    footer a {
+      color: #6b7280;
+      text-decoration: none;
+      margin: 0 6px;
+      font-size: 11px;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 880px) {
+      .page {
+        padding: 12px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 23px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-lg {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-cta-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="logo-circle">D</div>
+        <div>
+          <div class="brand-text-title">Dispute On Demand Pro</div>
+          <div class="brand-text-sub">Credit dispute letter automation</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button
+          class="btn-nav btn-outline"
+          onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})"
+        >
+          Get Discount
+        </button>
+        <button class="btn-nav btn-primary" onclick="goToApp()">
+          Launch App →
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="hero-badge">
+          ⚡ New • Built for DIY & pros
+        </div>
+        <h1 class="hero-title">
+          Turn messy credit reports into
+          <span>ready-to-mail dispute letters</span>.
+        </h1>
+        <p class="hero-subtitle">
+          Paste or upload a report, select the accounts you want to fight, and export
+          FCRA-friendly letters in minutes – without giving your data to the cloud.
+        </p>
+        <ul class="hero-list">
+          <li>
+            <span>✅</span> Local-only tool – nothing stored on our servers
+          </li>
+          <li>
+            <span>✅</span> Auto-generated letters for all 3 bureaus
+          </li>
+          <li>
+            <span>✅</span> Premium: unlimited disputes + saved client profiles
+          </li>
+        </ul>
+
+        <div class="hero-cta-row">
+          <button class="btn-lg btn-primary" onclick="goToApp()">
+            Launch the Generator →
+          </button>
+          <button
+            class="btn-lg btn-contrast"
+            onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})"
+          >
+            Get 20% Off First Month
+          </button>
+        </div>
+        <div class="hero-note">
+          No contracts. No hard pulls. Try the free version before upgrading.
+        </div>
+      </div>
+
+      <!-- HERO FORM -->
+      <div class="hero-right" id="waitlist">
+        <div class="pill-label">
+          💌 Email list • Early adopter perks
+        </div>
+        <h2 class="hero-form-title">Join the waitlist & unlock a discount</h2>
+        <p class="hero-form-sub">
+          Drop your email to get a <strong>20% OFF</strong> code for your first month
+          of Dispute On Demand Pro, plus templates and credit-repair tips.
+        </p>
+
+        <div class="coupon-pill">
+          🎁 Your code will be: <strong>DOD20</strong>
+        </div>
+
+        <form id="emailForm">
+          <div class="form-field">
+            <label for="name">First Name</label>
+            <input id="name" type="text" placeholder="e.g. Michael" />
+          </div>
+          <div class="form-field">
+            <label for="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <!-- ⭐ IMPORTANT:
+               Replace the JS below with your real email provider
+               (Mailchimp, ConvertKit, Beehiiv, Formspree, etc.)
+               when you're ready. For now it's front-end only. -->
+          <button type="submit" class="btn-full">
+            Get 20% Off & Join List
+          </button>
+        </form>
+
+        <div id="successMsg" class="success-msg">
+          ✅ You’re in! Your early-bird code is
+          <span>DOD20</span>. Use it on checkout when you upgrade to Premium.
+        </div>
+
+        <p class="small-note">
+          By joining, you agree to receive occasional emails about credit dispute
+          tips, templates, and product updates. No spam, unsubscribe anytime.
+        </p>
+      </div>
+    </section>
+
+    <!-- FEATURES / SOCIAL PROOF -->
+    <section class="section">
+      <h2 class="section-title">Why Dispute On Demand Pro?</h2>
+      <p class="section-sub">
+        A lot of credit tools feel like black boxes. This one stays on your device,
+        gives you control, and speeds up the boring admin work.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-title">Local-only processing</div>
+          <p>
+            Paste reports and generate letters directly in your browser. No login,
+            no cloud database, no uploading your full credit file to strangers.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Disputes in batches</div>
+          <p>
+            Free plan lets you send up to 3 items at once. Premium unlocks unlimited
+            disputes per batch – perfect for deeper clean-ups and client work.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-title">Saved client profiles</div>
+          <p>
+            For people helping family, friends, or clients: keep names, addresses
+            and notes stored locally so you’re not retyping information every time.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / TESTIMONIAL -->
+    <section class="section" style="margin-top: 18px;">
+      <div class="faq-grid">
+        <div>
+          <h2 class="section-title">Common questions</h2>
+          <div class="faq-item">
+            <div class="faq-q">Is this legal advice?</div>
+            <div class="faq-a">
+              No. Dispute On Demand Pro helps you format letters using language that
+              references FCRA rights, but it does not replace an attorney. Always
+              talk to a lawyer for legal questions.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do you store my credit report?</div>
+            <div class="faq-a">
+              No. Everything runs in your browser. Your data stays on your device.
+              Premium features like saved profiles use local storage only.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Will this guarantee deletions?</div>
+            <div class="faq-a">
+              No one can guarantee deletions. The tool is designed to streamline
+              your dispute process and keep you organized, not promise outcomes.
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="testimonial-card">
+            <div class="testimonial-quote">
+              “Instead of rewriting the same dispute letters over and over, now I
+              paste, click a few boxes, and export PDFs. It keeps me consistent and
+              saves me a ton of time.”
+            </div>
+            <div class="testimonial-author">
+              — Early beta tester, DIY credit repair
+            </div>
+          </div>
+          <div style="margin-top: 10px; font-size: 11px; color: #6b7280;">
+            <strong>Ready to try it?</strong> Use the free version first, then apply
+            your <strong>DOD20</strong> code when you upgrade to Premium.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <a href="#" onclick="goToApp();return false;">Launch App</a> •
+        <a href="mailto:youremail@example.com">Contact</a> •
+        <a href="#">Privacy</a>
+      </div>
+      <div style="margin-top: 4px;">
+        © <span id="year"></span> Dispute On Demand Pro. All rights reserved.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Go to your main app (currently index.html at root)
+    function goToApp() {
+      window.location.href = "/";
+      // If you move the app to /app.html, change this to "/app.html"
+    }
+
+    // Fake "collection" for now – local only + success message
+    const emailForm = document.getElementById("emailForm");
+    const successMsg = document.getElementById("successMsg");
+
+    emailForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (!email) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      // Store locally for now so you at least have a record on the device
+      const existing = JSON.parse(localStorage.getItem("dod_waitlist") || "[]");
+      existing.push({
+        name,
+        email,
+        ts: new Date().toISOString()
+      });
+      localStorage.setItem("dod_waitlist", JSON.stringify(existing));
+
+      // TODO: When you choose an email provider (Mailchimp, ConvertKit, Formspree, etc.),
+      // replace this with a real POST request to their endpoint.
+
+      successMsg.style.display = "block";
+      emailForm.reset();
+    });
+
+    // Set year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Dispute Tool - Generate Credit Bureau Letters | Dispute On Demand</title>
+    <meta name="description" content="Generate FCRA-compliant credit dispute letters for Equifax, Experian, and TransUnion. 100% local processing, zero cloud storage. Free for up to 3 disputes.">
+    <meta name="keywords" content="credit dispute, credit repair, FCRA, credit bureau, dispute letter, credit report">
+    <meta name="author" content="Dispute On Demand">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Credit Dispute Tool - Dispute On Demand">
+    <meta property="og:description" content="Generate professional credit dispute letters in minutes. 100% private, local processing.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        /* ============================================
+           MODERN COLOR PALETTE - TRUSTWORTHY & WELCOMING
+           ============================================ */
+        :root {
+            /* Primary Colors - Trust & Professionalism */
+            --color-primary: #4A90E2;
+            --color-primary-dark: #357ABD;
+            --color-primary-light: #E8F4FF;
+            
+            /* Success & Growth */
+            --color-success: #5CB85C;
+            --color-success-light: #DFF0D8;
+            
+            /* Accent - Warmth & Friendliness */
+            --color-accent: #F39C12;
+            --color-accent-light: #FFF3E0;
+            
+            /* Neutrals - Clean & Modern */
+            --color-bg: #F8FAFB;
+            --color-surface: #FFFFFF;
+            --color-text: #2C3E50;
+            --color-text-light: #7F8C8D;
+            --color-border: #E0E6ED;
+            
+            /* Semantic Colors */
+            --color-warning: #FF9800;
+            --color-danger: #E74C3C;
+            --color-info: #3498DB;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+            
+            /* Transitions */
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           GLOBAL RESET & BASE STYLES
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================
+           LAYOUT STRUCTURE
+           ============================================ */
+        .app-container {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           SIDEBAR - USER INFO & CONTROLS
+           ============================================ */
+        .sidebar {
+            background: var(--color-surface);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+            height: fit-content;
+            position: sticky;
+            top: 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+        }
+
+        /* Version Badge */
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .version-badge.free {
+            background: var(--color-border);
+            color: var(--color-text-light);
+        }
+
+        .version-badge.premium {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-section label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-light);
+            margin-bottom: 6px;
+            margin-top: 12px;
+        }
+
+        .form-section input,
+        .form-section select,
+        .form-section textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--color-text);
+            background: var(--color-surface);
+            transition: var(--transition);
+        }
+
+        .form-section input:focus,
+        .form-section select:focus,
+        .form-section textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-light);
+        }
+
+        /* Premium Upgrade Button */
+        .premium-upgrade {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .premium-upgrade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.4);
+        }
+
+        .premium-status {
+            font-size: 12px;
+            color: var(--color-success);
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           MAIN CONTENT AREA
+           ============================================ */
+        .main-content {
+            background: var(--color-surface);
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Header */
+        .app-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .app-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 12px;
+        }
+
+        .app-header p {
+            color: var(--color-text-light);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ============================================
+           PROGRESS STEPS
+           ============================================ */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 48px;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--color-border);
+            z-index: 0;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface);
+            border: 3px solid var(--color-border);
+            color: var(--color-text-light);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .step.active .step-number {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .step.completed .step-number {
+            background: var(--color-success);
+            border-color: var(--color-success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step.active .step-label {
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           UPLOAD SECTION
+           ============================================ */
+        .upload-section {
+            border: 3px dashed var(--color-border);
+            border-radius: 16px;
+            padding: 48px;
+            text-align: center;
+            margin-bottom: 32px;
+            background: var(--color-bg);
+            transition: var(--transition);
+        }
+
+        .upload-section.drag-over {
+            border-color: var(--color-primary);
+            background: var(--color-primary-light);
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+
+        .upload-section h2 {
+            font-size: 24px;
+            color: var(--color-text);
+            margin-bottom: 8px;
+        }
+
+        .upload-section p {
+            color: var(--color-text-light);
+            margin-bottom: 24px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-button {
+            padding: 14px 32px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-block;
+            transition: var(--transition);
+            border: none;
+            font-size: 15px;
+        }
+
+        .upload-button:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Paste Area */
+        .paste-option {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 2px solid var(--color-border);
+        }
+
+        textarea.paste-area {
+            width: 100%;
+            min-height: 200px;
+            padding: 16px;
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin-top: 16px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            resize: vertical;
+        }
+
+        /* ============================================
+           DISPUTES LIST
+           ============================================ */
+        .disputes-list {
+            margin-top: 32px;
+        }
+
+        .disputes-list h2 {
+            font-size: 20px;
+            color: var(--color-text);
+            margin-bottom: 16px;
+        }
+
+        .selected-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var
+(--color-primary-light);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+
+        .dispute-item {
+            background: var(--color-bg);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .dispute-item:hover {
+            border-color: var(--color-primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .dispute-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            margin-top: 2px;
+            accent-color: var(--color-primary);
+        }
+
+        .dispute-details {
+            flex: 1;
+        }
+
+        .dispute-details strong {
+            color: var(--color-text);
+            display: block;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .dispute-details small {
+            color: var(--color-text-light);
+            font-size: 13px;
+        }
+
+        /* ============================================
+           BUTTONS & ACTIONS
+           ============================================ */
+        .btn {
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: var(--color-bg);
+            color: var(--color-text);
+            border: 2px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-border);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #4CAE4C;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        /* ============================================
+           MODAL / POPUP
+           ============================================ */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--color-surface);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-content h3 {
+            color: var(--color-primary);
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .modal-content ul {
+            margin: 20px 0;
+            padding-left: 24px;
+        }
+
+        .modal-content li {
+            margin: 10px 0;
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .modal-price {
+            background: var(--color-primary-light);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .modal-price strong {
+            font-size: 32px;
+            color: var(--color-primary);
+        }
+
+        /* ============================================
+           GENERATED LETTERS SECTION
+           ============================================ */
+        .letters-section {
+            margin-top: 32px;
+        }
+
+        .letter-preview {
+            background: var(--color-bg);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .letter-preview h3 {
+            color: var(--color-text);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .letter-content {
+            background: var(--color-surface);
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--color-text);
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* ============================================
+           ALERTS & NOTIFICATIONS
+           ============================================ */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .alert-info {
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .alert-warning {
+            background: var(--color-accent-light);
+            color: #C87A0A;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .alert-success {
+            background: var(--color-success-light);
+            color: #3D8B3D;
+            border-left: 4px solid var(--color-success);
+        }
+
+        /* ============================================
+           UTILITY CLASSES
+           ============================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 { margin-top: 8px; }
+        .mt-2 { margin-top: 16px; }
+        .mt-3 { margin-top: 24px; }
+        .mb-1 { margin-bottom: 8px; }
+        .mb-2 { margin-bottom: 16px; }
+        .mb-3 { margin-bottom: 24px; }
+
+        /* ============================================
+           RESPONSIVE DESIGN
+           ============================================ */
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 280px 1fr;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
+
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .main-content {
+                padding: 32px 24px;
+            }
+
+            .app-header h1 {
+                font-size: 28px;
+            }
+
+            .steps {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .steps::before {
+                display: none;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 24px 16px;
+            }
+
+            .upload-section {
+                padding: 32px 20px;
+            }
+
+            .modal-content {
+                padding: 24px;
+            }
+        }
+
+        /* ============================================
+           LOADING SPINNER
+           ============================================ */
+        .spinner {
+            border: 3px solid var(--color-border);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           PRINT STYLES
+           ============================================ */
+        @media print {
+            body {
+                background: white;
+            }
+            .sidebar, .button-group, .steps {
+                display: none;
+            }
+            .main-content {
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ============================================
+             SIDEBAR
+             ============================================ -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">💳</span>
+                <span>Dispute On Demand</span>
+            </div>
+
+            <div id="versionBadge" class="version-badge free">
+                <span>📋</span>
+                <span>Free - 3 Disputes</span>
+            </div>
+
+            <!-- User Information Form -->
+            <div class="form-section">
+                <h3>Your Information</h3>
+                
+                <label>Full Name *</label>
+                <input type="text" id="userName" placeholder="John Doe" required>
+
+                <label>Address *</label>
+                <input type="text" id="userAddress" placeholder="123 Main Street">
+
+                <label>City, State, ZIP *</label>
+                <input type="text" id="userCity" placeholder="New York, NY 10001">
+
+                <label>Your State *</label>
+                <select id="userState" required>
+                    <option value="">Select your state...</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                    <option value="DC">Washington D.C.</option>
+                </select>
+            </div>
+
+            <!-- Premium Upgrade Section -->
+            <div class="form-section">
+                <h3>⭐ Premium Access</h3>
+                <p style="font-size: 13px; color: var(--color-text-light); margin-bottom: 12px;">
+                    Unlock unlimited disputes, saved profiles, and priority templates.
+                </p>
+                <button class="premium-upgrade" onclick="openPremiumModal()">
+                    <span>🚀</span>
+                    <span>Upgrade - $19.99/mo</span>
+                </button>
+                <p id="premiumStatusText" class="premium-status">
+                    ✓ Premium Active
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="form-section">
+                <h3>Resources</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                    <a href="croa-disclosure.html" style="color: var(--color-primary); text-decoration: none;">📋 Your Legal Rights</a>
+                    <a href="terms.html" style="color: var(--color-primary); text-decoration: none;">📄 Terms of Service</a>
+                    <a href="privacy.html" style="color: var(--color-primary); text-decoration: none;">🔒 Privacy Policy</a>
+                    <a href="landing.html" style="color: var(--color-primary); text-decoration: none;">🏠 Back to Home</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ============================================
+             MAIN CONTENT
+             ============================================ -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="app-header">
+                <h1>Credit Dispute Letter Generator</h1>
+                <p>Generate FCRA-compliant dispute letters for all 3 credit bureaus. 100% private - all processing happens locally on your device.</p>
+            </header>
+
+            <!-- Progress Steps -->
+            <div class="steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Upload Report</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Select Disputes</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Generate Letters</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Download PDFs</div>
+                </div>
+            </div>
+
+            <!-- Legal Notice -->
+            <div class="alert alert-info">
+                <span>ℹ️</span>
+                <div>
+                    <strong>Privacy Notice:</strong> All processing happens locally in your browser. Your credit data is never uploaded to our servers. 
+                    <a href="privacy.html" style="color: var(--color-primary); font-weight: 600;">Learn more</a>
+                </div>
+            </div>
+
+            <!-- Step 1: Upload Section -->
+            <section id="uploadSection">
+                <div class="upload-section" id="dropZone">
+                    <div class="upload-icon">📄</div>
+                    <h2>Upload Your Credit Report</h2>
+                    <p>Drag and drop your credit report file here, or click to browse</p>
+                    
+                    <div class="file-input-wrapper">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx" onchange="handleFileUpload(event)">
+                        <button class="upload-button">
+                            📁 Choose File
+                        </button>
+                    </div>
+
+                    <div class="paste-option">
+                        <p style="color: var(--color-text-light); margin-bottom: 8px;">
+                            <strong>Or paste your credit report text:</strong>
+                        </p>
+                        <textarea id="pasteArea" class="paste-area" placeholder="Paste your credit report text here...
+
+Example format:
+Account Name: Capital One
+Account Number: 1234
+Balance: $500
+Status: Late Payment
+
+Account Name: Chase Bank
+Account Number: 5678
+Balance: $1200
+Status: Current"></textarea>
+                        <button class="btn btn-primary mt-2" onclick="parseFromPaste()">
+                            <span>✓</span>
+                            <span>Parse Credit Report</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Disputes List -->
+            <section id="disputesSection" class="hidden">
+                <div class="disputes-list">
+                    <h2>Select Items to Dispute</h2>
+                    <div class="selected-count">
+                        <span>Selected: <span id="selectedCount">0</span></span>
+                    </div>
+                    
+                    <div class="alert alert-warning" id="limitWarning" style="display: none;">
+                        <span>⚠️</span>
+                        <div>
+                            <strong>Free Tier Limit:</strong> You can select up to 3 disputes. 
+                            <a href="#" onclick="openPremiumModal(); return false;" style="color: var(--color-primary); font-weight: 600;">Upgrade to Premium</a> for unlimited disputes.
+                        </div>
+                    </div>
+
+                    <div id="disputesList"></div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="generateLetters()">
+                            <span>✍️</span>
+                            <span>Generate Dispute Letters</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetApp()">
+                            <span>↺</span>
+                            <span>Start Over</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Generated Letters -->
+            <section id="lettersSection" class="hidden">
+                <div class="letters-section">
+                    <div class="alert alert-success">
+                        <span>✓</span>
+                        <div>
+                            <strong>Letters Generated Successfully!</strong> Review your letters below and download them as PDFs.
+                        </div>
+                    </div>
+
+                    <h2>Your Dispute Letters</h2>
+                    <p style="color: var(--color-text-light); margin-bottom: 24px;">
+                        Review each letter carefully before sending. You can copy the text or download as PDF.
+                    </p>
+
+                    <div id="generatedLetters"></div>
+
+                    <div class="button-group">
+                        <button class="btn btn-success" onclick="downloadAllPDFs()">
+                            <span>⬇️</span>
+                            <span>Download All PDFs</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetApp()">
+                            <span>↺</span>
+                            <span>Start New Dispute</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ============================================
+         PREMIUM MODAL
+         ============================================ -->
+    <div id="premiumModal" class="modal">
+        <div class="modal-content">
+            <h3>✨ Upgrade to Premium</h3>
+            <p style="color: var(--color-text-light); margin-bottom: 20px;">
+                Unlock the full power of Dispute On Demand with unlimited disputes and advanced features.
+            </p>
+
+            <ul style="margin: 20px 0;">
+                <li><strong>Unlimited disputes</strong> per session</li>
+                <li><strong>Save your profile</strong> locally for faster letters</li>
+                <li><strong>Priority letter templates</strong> with enhanced language</li>
+                <li><strong>Advanced tracking</strong> and follow-up schedules</li>
+                <li><strong>Priority email support</strong></li>
+            </ul>
+
+            <div class="modal-price">
+                <div><strong>$19.99</strong> / month</div>
+                <div style="font-size: 13px; color: var(--color-text-light); margin-top: 8px;">
+                    Cancel anytime. 3-day money-back guarantee.
+                </div>
+            </div>
+
+            <div style="background: var(--color-bg); padding: 16px; border-radius: 8px; margin: 20px 0; font-size: 13px; color: var(--color-text-light);">
+                <strong>Important:</strong> Before purchasing, please review your <a href="croa-disclosure.html" style="color: var(--color-primary);">legal rights under CROA</a>. You have the right to dispute credit errors for free.
+            </div>
+
+            <div class="button-group" style="margin-top: 24px;">
+                <button class="btn btn-primary" onclick="activateLocalPremium()">
+                    <span>✓</span>
+                    <span>Activate Premium (Test Mode)</span>
+                </button>
+                <button class="btn btn-secondary" onclick="closePremiumModal()">
+                    <span>✕</span>
+                    <span>Maybe Later</span>
+                </button>
+            </div>
+
+            <p style="margin-top: 20px; font-size: 12px; color: var(--color-text-light); text-align: center;">
+                In production, this will redirect to secure Stripe checkout. Test mode unlocks premium features on this device only.
+            </p>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JAVASCRIPT - APPLICATION LOGIC
+         ============================================ -->
+    <script>
+        // ============================================
+        // GLOBAL STATE
+        // ============================================
+        let appVersion = 'free';
+        let parsedDisputes = [];
+        let selectedDisputes = [];
+
+        // Bureau addresses
+        const bureauAddresses = {
+            equifax: {
+                name: 'Equifax',
+                address: 'Equifax Information Services LLC\nP.O. Box 740256\nAtlanta, GA 30374'
+            },
+            experian: {
+                name: 'Experian',
+                address: 'Experian\nP.O. Box 4500\nAllen, TX 75013'
+            },
+            transunion: {
+                name: 'TransUnion',
+                address: 'TransUnion LLC\nConsumer Dispute Center\nP.O. Box 2000\nChester, PA 19016'
+            }
+        };
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPremiumStatus();
+            setupDragAndDrop();
+        });
+
+        // ============================================
+        // PREMIUM MANAGEMENT
+        // ============================================
+        function loadPremiumStatus() {
+            const isPremium = localStorage.getItem('dod_premium_active') === 'true';
+            if (isPremium) {
+                appVersion = 'premium';
+                updatePremiumUI();
+            }
+        }
+
+        function updatePremiumUI() {
+            const badge = document.getElementById('versionBadge');
+            badge.className = 'version-badge premium';
+            badge.innerHTML = '<span>⭐</span><span>Premium - Unlimited</span>';
+            
+            const statusText = document.getElementById('premiumStatusText');
+            if (statusText) statusText.style.display = 'block';
+        }
+
+        function openPremiumModal() {
+            document.getElementById('premiumModal').classList.add('show');
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premiumModal').classList.remove('show');
+        }
+
+        function activateLocalPremium() {
+            localStorage.setItem('dod_premium_active', 'true');
+            appVersion = 'premium';
+            updatePremiumUI();
+            closePremiumModal();
+            alert('✅ Premium unlocked on this device! You now have unlimited disputes.');
+        }
+
+        // ============================================
+        // FILE UPLOAD & DRAG/DROP
+        // ============================================
+        function setupDragAndDrop() {
+            const dropZone = document.getElementById('dropZone');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drag-over');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drag-over');
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', handleDrop, false);
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length > 0) {
+                handleFileUpload({ target: { files: files } });
+            }
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                parseFromText(text);
+            };
+            reader.readAsText(file);
+        }
+
+        function parseFromPaste() {
+            const text = document.getElementById('pasteArea').value;
+            if (!text.trim()) {
+                alert('⚠️ Please paste your credit report text first.');
+                return;
+            }
+            parseFromText(text);
+        }
+
+        // ============================================
+        // CREDIT REPORT PARSING
+        // ============================================
+        function parseFromText(text) {
+            parsedDisputes = [];
+            
+            // Simple parsing logic - looks for account patterns
+            const lines = text.split('\n');
+            let currentAccount = {};
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                if (line.toLowerCase().includes('account name') || line.toLowerCase().includes('creditor')) {
+                    if (currentAccount.name) {
+                        parsedDisputes.push({...currentAccount});
+                    }
+                    currentAccount = {
+                        name: line.split(':')[1]?.trim() || 'Unknown Creditor',
+                        accountNumber: '',
+                        balance: '',
+                        status: ''
+                    };
+                }
+                else if (line.toLowerCase().includes('account number') || line.toLowerCase().includes('account #')) {
+                    currentAccount.accountNumber = line.split(':')[1]?.trim() || 'Not specified';
+                }
+                else if (line.toLowerCase().includes('balance')) {
+                    currentAccount.balance = line.split(':')[1]?.trim() || '$0';
+                }
+                else if (line.toLowerCase().includes('status') || line.toLowerCase().includes('payment')) {
+                    currentAccount.status = line.split(':')[1]?.trim() || 'Unknown';
+                }
+            }
+            
+            // Add last account
+            if (currentAccount.name) {
+                parsedDisputes.push(currentAccount);
+            }
+
+            // If no accounts found, create sample data
+            if (parsedDisputes.length === 0) {
+                parsedDisputes = [
+                    { name: 'Sample Account 1', accountNumber: '****1234', balance: '$500', status: 'Late Payment' },
+                    { name: 'Sample Account 2', accountNumber: '****5678', balance: '$1,200', status: 'Collections' },
+                    { name: 'Sample Account 3', accountNumber: '****9012', balance: '$300', status: 'Charge-off' }
+                ];
+            }
+
+            displayDisputes();
+        }
+
+        // ============================================
+        // DISPLAY DISPUTES
+        // ============================================
+        function displayDisputes() {
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('disputesSection').classList.remove('hidden');
+            
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+
+            const disputesList = document.getElementById('disputesList');
+            disputesList.innerHTML = '';
+
+            parsedDisputes.forEach((dispute, index) => {
+                const item = document.createElement('div');
+                item.className = 'dispute-item';
+                item.innerHTML = `
+                    <input type="checkbox" id="dispute_${index}" onchange="updateSelectedCount()">
+                    <div class="dispute-details">
+                        <strong>${dispute.name}</strong>
+                        <small>Account: ${dispute.accountNumber} | Balance: ${dispute.balance} | Status: ${dispute.status}</small>
+                    </div>
+                `;
+                disputesList.appendChild(item);
+            });
+        }
+
+        // ============================================
+        // SELECTION MANAGEMENT
+        // ============================================
+        function updateSelectedCount() {
+            const checkboxes = document.querySelectorAll('#disputesList input[type="checkbox"]');
+            selectedDisputes = Array.from(checkboxes)
+                .map((cb, index) => cb.checked ? index : null)
+                .filter(i => i !== null);
+
+            const count = selectedDisputes.length;
+
+            // Free tier limit check
+            if (appVersion === 'free' && count > 3) {
+                event.target.checked = false;
+                document.getElementById('limitWarning').style.display = 'flex';
+                openPremiumModal();
+                return;
+            }
+
+            document.getElementById('selectedCount').textContent = count;
+            
+            if (count > 0) {
+                document.getElementById('limitWarning').style.display = 'none';
+            }
+        }
+
+        // ============================================
+        // LETTER GENERATION
+        // ============================================
+        function generateLetters() {
+            if (selectedDisputes.length === 0) {
+                alert('⚠️ Please select at least one item to dispute.');
+                return;
+            }
+
+            // Get user info
+            const userName = document.getElementById('userName').value;
+            const userAddress = document.getElementById('userAddress').value;
+            const userCity = document.getElementById('userCity').value;
+            const userState = document.getElementById('userState').value;
+
+            if (!userName || !userAddress || !userCity || !userState) {
+                alert('⚠️ Please fill in all your information in the sidebar.');
+                return;
+            }
+
+            // Generate letters for each bureau
+            const letters = [];
+            Object.keys(bureauAddresses).forEach(bureau => {
+                const letter = generateLetterText(bureau, userName, userAddress, userCity, selectedDisputes);
+                letters.push({
+                    bureau: bureauAddresses[bureau].name,
+                    content: letter
+                });
+            });
+
+            displayLetters(letters);
+        }
+
+        function generateLetterText(bureau, name, address, city, disputeIndices) {
+            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            const bureauInfo = bureauAddresses[bureau];
+            
+            let disputeItems = '';
+            disputeIndices.forEach(index => {
+                const dispute = parsedDisputes[index];
+                disputeItems += `
+
+${index + 1}. ${dispute.name}
+   Account Number: ${dispute.accountNumber}
+   Reason for dispute: This information is inaccurate and requires verification under FCRA § 611.`;
+            });
+
+            return `${name}
+${address}
+${city}
+
+${today}
+
+${bureauInfo.address}
+
+Re: Request for Investigation of Inaccurate Credit Information
+
+Dear Sir/Madam,
+
+I am writing to dispute inaccurate information appearing on my credit report. Under the Fair Credit Reporting Act (FCRA) 15 U.S.C. § 1681, I have the right to request that you investigate and correct any inaccurate, incomplete, or unverifiable information in my credit file.
+
+The following items on my credit report are inaccurate:
+${disputeItems}
+
+Under FCRA § 611(a)(1)(A), you are required to conduct a reasonable investigation of my dispute within 30 days of receiving this letter. If you cannot verify the accuracy of this information, you must delete it from my credit file pursuant to FCRA § 611(a)(5)(A).
+
+I request that you:
+1. Conduct a thorough investigation of the items listed above
+2. Provide me with written results of your investigation
+3. Correct or delete any information found to be inaccurate or unverifiable
+4. Provide me with an updated credit report if changes are made
+
+Please send all correspondence to my address listed above.
+
+Thank you for your prompt attention to this matter.
+
+Sincerely,
+
+${name}
+
+---
+This letter was generated using Dispute On Demand. You have the right to dispute credit report errors for free by contacting credit bureaus directly. This tool is for convenience and does not guarantee any specific results.`;
+        }
+
+        // ============================================
+        // DISPLAY GENERATED LETTERS
+        // ============================================
+        function displayLetters(letters) {
+            document.getElementById('disputesSection').classList.add('hidden');
+            document.getElementById('lettersSection').classList.remove('hidden');
+            
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step2').classList.add('completed');
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step3').classList.add('completed');
+            document.getElementById('step4').classList.add('active');
+
+            const container = document.getElementById('generatedLetters');
+            container.innerHTML = '';
+
+            letters.forEach((letter, index) => {
+                const letterDiv = document.createElement('div');
+                letterDiv.className = 'letter-preview';
+                letterDiv.innerHTML = `
+                    <h3>📄 ${letter.bureau} Dispute Letter</h3>
+                    <div class="letter-content" id="letter_${index}">${letter.content}</div>
+                    <div class="button-group mt-2">
+                        <button class="btn btn-primary" onclick="downloadSinglePDF(${index}, '${letter.bureau}')">
+                            <span>⬇️</span>
+                            <span>Download PDF</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyToClipboard(${index})">
+                            <span>📋</span>
+                            <span>Copy Text</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(letterDiv);
+            });
+        }
+
+        // ============================================
+        // PDF GENERATION
+        // ============================================
+        function downloadSinglePDF(index, bureauName) {
+            const element = document.getElementById(`letter_${index}`);
+            const opt = {
+                margin: 1,
+                filename: `${bureauName}_Dispute_Letter.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        }
+
+        function downloadAllPDFs() {
+            const letters = document.querySelectorAll('.letter-content');
+            const bureaus = ['Equifax', 'Experian', 'TransUnion'];
+            
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    downloadSinglePDF(index, bureaus[index]);
+                }, index * 1000);
+            });
+            
+            alert('📥 Downloading all PDFs... Each file will download automatically with a 1-second delay.');
+        }
+
+        function copyToClipboard(index) {
+            const element = document.getElementById(`letter_${index}`);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Letter copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('❌ Failed to copy. Please try again.');
+            });
+        }
+
+        // ============================================
+        // RESET APPLICATION
+        // ============================================
+        function resetApp() {
+            if (confirm('Are you sure you want to start over? This will clear all your current disputes.')) {
+                parsedDisputes = [];
+                selectedDisputes = [];
+                
+                document.getElementById('pasteArea').value = '';
+                document.getElementById('fileInput').value = '';
+                
+                document.getElementById('uploadSection').classList.remove('hidden');
+                document.getElementById('disputesSection').classList.add('hidden');
+                document.getElementById('lettersSection').classList.add('hidden');
+                
+                document.getElementById('step1').classList.add('active');
+                document.getElementById('step1').classList.remove('completed');
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step2').classList.remove('completed');
+                document.getElementById('step3').classList.remove('active');
+                document.getElementById('step3').classList.remove('completed');
+                document.getElementById('step4').classList.remove('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ============================================
+        // CLOSE MODAL ON OUTSIDE CLICK
+        // ============================================
+        window.onclick = function(event) {
+            const modal = document.getElementById('premiumModal');
+            if (event.target === modal) {
+                closePremiumModal();
+            }
+        }
+    </script>
+</body>
+</html>

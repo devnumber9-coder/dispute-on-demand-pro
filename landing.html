@@ -1,713 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1"
-  />
-  <title>Dispute On Demand Pro – Credit Repair Automation</title>
-  <style>
-    :root {
-      --color-primary: #1f8ba0;
-      --color-primary-dark: #166d7f;
-      --color-accent: #6f42c1;
-      --color-bg: #f3f6fb;
-      --color-text: #1a1a1a;
-      --color-muted: #6b7280;
-      --radius-lg: 16px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        sans-serif;
-      background: radial-gradient(circle at top, #e2f3ff 0, #f4f7fb 45%, #f9fafb 100%);
-      color: var(--color-text);
-      line-height: 1.5;
-    }
-
-    .page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 0 4px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .logo-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 16px;
-    }
-
-    .brand-text-title {
-      font-weight: 700;
-      font-size: 18px;
-      letter-spacing: 0.02em;
-    }
-
-    .brand-text-sub {
-      font-size: 11px;
-      color: var(--color-muted);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-nav {
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      border: none;
-      cursor: pointer;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid #d1d5db;
-      color: #374151;
-    }
-
-    .btn-primary {
-      background: var(--color-primary);
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: var(--color-primary-dark);
-    }
-
-    /* Hero */
-    .hero {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(31, 139, 160, 0.08);
-      color: var(--color-primary-dark);
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-
-    .hero-title {
-      font-size: 28px;
-      line-height: 1.15;
-      margin-bottom: 8px;
-    }
-
-    .hero-title span {
-      color: var(--color-primary);
-    }
-
-    .hero-subtitle {
-      font-size: 13px;
-      color: var(--color-muted);
-      margin-bottom: 14px;
-    }
-
-    .hero-list {
-      list-style: none;
-      margin-bottom: 16px;
-      font-size: 13px;
-      color: #374151;
-    }
-
-    .hero-list li {
-      margin-bottom: 6px;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-    }
-
-    .hero-list li span {
-      font-size: 14px;
-      margin-top: 1px;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .btn-lg {
-      padding: 10px 18px;
-      font-size: 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      border: none;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-contrast {
-      background: #fff;
-      border: 1px solid #d1d5db;
-      color: #111827;
-    }
-
-    .hero-note {
-      font-size: 11px;
-      color: var(--color-muted);
-    }
-
-    .hero-right {
-      background: #fff;
-      border-radius: var(--radius-lg);
-      padding: 16px 14px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      border: 1px solid #e5e7eb;
-    }
-
-    .pill-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: #f3e8ff;
-      color: #6b21a8;
-      margin-bottom: 6px;
-    }
-
-    .hero-form-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .hero-form-sub {
-      font-size: 11px;
-      color: var(--color-muted);
-      margin-bottom: 10px;
-    }
-
-    .form-field {
-      margin-bottom: 10px;
-    }
-
-    .form-field label {
-      display: block;
-      font-size: 12px;
-      color: #374151;
-      margin-bottom: 4px;
-    }
-
-    .form-field input {
-      width: 100%;
-      padding: 8px 9px;
-      font-size: 13px;
-      border-radius: 8px;
-      border: 1px solid #d1d5db;
-    }
-
-    .form-field input:focus {
-      outline: none;
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 1px rgba(31, 139, 160, 0.2);
-    }
-
-    .coupon-pill {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.08);
-      color: #047857;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-bottom: 10px;
-    }
-
-    .btn-full {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: none;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-      color: #fff;
-    }
-
-    .btn-full:hover {
-      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-accent));
-    }
-
-    .small-note {
-      font-size: 10px;
-      color: var(--color-muted);
-      margin-top: 6px;
-    }
-
-    .success-msg {
-      display: none;
-      margin-top: 8px;
-      font-size: 12px;
-      color: #047857;
-      background: #ecfdf5;
-      padding: 6px 8px;
-      border-radius: 8px;
-      border: 1px solid #bbf7d0;
-    }
-
-    .success-msg span {
-      font-weight: 700;
-    }
-
-    /* Social proof / features */
-    .section {
-      margin-top: 28px;
-      background: #fff;
-      border-radius: var(--radius-lg);
-      padding: 16px 14px;
-      box-shadow: 0 8px 26px rgba(15, 23, 42, 0.05);
-      border: 1px solid #e5e7eb;
-    }
-
-    .section-title {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    .section-sub {
-      font-size: 12px;
-      color: var(--color-muted);
-      margin-bottom: 14px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .feature-card {
-      padding: 10px 10px;
-      border-radius: 12px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-    }
-
-    .feature-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      font-size: 13px;
-    }
-
-    .feature-card p {
-      color: #4b5563;
-      font-size: 12px;
-    }
-
-    /* FAQ */
-    .faq-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 16px;
-    }
-
-    .faq-item {
-      margin-bottom: 10px;
-    }
-
-    .faq-q {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .faq-a {
-      font-size: 12px;
-      color: #4b5563;
-    }
-
-    .testimonial-card {
-      background: #f9fafb;
-      border-radius: 12px;
-      padding: 10px 10px;
-      border: 1px solid #e5e7eb;
-      font-size: 12px;
-    }
-
-    .testimonial-quote {
-      font-style: italic;
-      margin-bottom: 6px;
-      color: #374151;
-    }
-
-    .testimonial-author {
-      font-size: 11px;
-      color: #6b7280;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 11px;
-      color: #9ca3af;
-      padding: 16px 0 8px;
-    }
-
-    footer a {
-      color: #6b7280;
-      text-decoration: none;
-      margin: 0 6px;
-      font-size: 11px;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 880px) {
-      .page {
-        padding: 12px;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-actions {
-        width: 100%;
-        justify-content: flex-start;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .hero-title {
-        font-size: 23px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .faq-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .btn-lg {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .hero-cta-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dispute On Demand - Take Back Control of Your Credit</title>
+    <meta name="description" content="Transparent credit dispute tools with free and premium features. Start fixing your credit today with local processing and zero cloud storage.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .hero h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #1a202c;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+        
+        .feature-card p {
+            color: #4a5568;
+            line-height: 1.7;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 80px 0;
+            background: #f5f7fa;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        
+        .pricing-card.featured {
+            border: 3px solid #667eea;
+            transform: scale(1.05);
+        }
+        
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+        
+        .plan-price {
+            font-size: 48px;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .plan-price span {
+            font-size: 18px;
+            color: #718096;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .plan-features li:before {
+            content: "✓ ";
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .plan-features li.unavailable {
+            color: #cbd5e0;
+        }
+        
+        .plan-features li.unavailable:before {
+            content: "✗ ";
+            color: #cbd5e0;
+        }
+        
+        /* Trust Section */
+        .trust {
+            padding: 80px 0;
+            background: white;
+            text-align: center;
+        }
+        
+        .testimonial {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stars {
+            color: #fbbf24;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-text {
+            font-size: 18px;
+            font-style: italic;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a202c;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-disclaimer {
+            font-size: 13px;
+            color: #718096;
+            max-width: 800px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero h2 {
+                font-size: 18px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="page">
+    <!-- Header -->
     <header>
-      <div class="brand">
-        <div class="logo-circle">D</div>
-        <div>
-          <div class="brand-text-title">Dispute On Demand Pro</div>
-          <div class="brand-text-sub">Credit dispute letter automation</div>
+        <div class="container">
+            <nav>
+                <div class="logo">💳 Dispute On Demand</div>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="app.html">Launch App</a></li>
+                </ul>
+            </nav>
         </div>
-      </div>
-      <div class="nav-actions">
-        <button
-          class="btn-nav btn-outline"
-          onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})"
-        >
-          Get Discount
-        </button>
-        <button class="btn-nav btn-primary" onclick="goToApp()">
-          Launch App →
-        </button>
-      </div>
     </header>
 
-    <!-- HERO -->
+    <!-- Hero Section -->
     <section class="hero">
-      <div>
-        <div class="hero-badge">
-          ⚡ New • Built for DIY & pros
+        <div class="container">
+            <h1>Dispute On Demand</h1>
+            <h2>Take Back Control of Your Credit</h2>
+            <p>Clear dispute tools + educational guidance so you can start fixing your credit — without confusion or hidden fees.</p>
+            <div class="cta-buttons">
+                <a href="app.html" class="btn btn-primary">Start Free Today</a>
+                <a href="#features" class="btn btn-secondary">Learn How It Works</a>
+            </div>
         </div>
-        <h1 class="hero-title">
-          Turn messy credit reports into
-          <span>ready-to-mail dispute letters</span>.
-        </h1>
-        <p class="hero-subtitle">
-          Paste or upload a report, select the accounts you want to fight, and export
-          FCRA-friendly letters in minutes – without giving your data to the cloud.
-        </p>
-        <ul class="hero-list">
-          <li>
-            <span>✅</span> Local-only tool – nothing stored on our servers
-          </li>
-          <li>
-            <span>✅</span> Auto-generated letters for all 3 bureaus
-          </li>
-          <li>
-            <span>✅</span> Premium: unlimited disputes + saved client profiles
-          </li>
-        </ul>
-
-        <div class="hero-cta-row">
-          <button class="btn-lg btn-primary" onclick="goToApp()">
-            Launch the Generator →
-          </button>
-          <button
-            class="btn-lg btn-contrast"
-            onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})"
-          >
-            Get 20% Off First Month
-          </button>
-        </div>
-        <div class="hero-note">
-          No contracts. No hard pulls. Try the free version before upgrading.
-        </div>
-      </div>
-
-      <!-- HERO FORM -->
-      <div class="hero-right" id="waitlist">
-        <div class="pill-label">
-          💌 Email list • Early adopter perks
-        </div>
-        <h2 class="hero-form-title">Join the waitlist & unlock a discount</h2>
-        <p class="hero-form-sub">
-          Drop your email to get a <strong>20% OFF</strong> code for your first month
-          of Dispute On Demand Pro, plus templates and credit-repair tips.
-        </p>
-
-        <div class="coupon-pill">
-          🎁 Your code will be: <strong>DOD20</strong>
-        </div>
-
-        <form id="emailForm">
-          <div class="form-field">
-            <label for="name">First Name</label>
-            <input id="name" type="text" placeholder="e.g. Michael" />
-          </div>
-          <div class="form-field">
-            <label for="email">Email Address</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-          <!-- ⭐ IMPORTANT:
-               Replace the JS below with your real email provider
-               (Mailchimp, ConvertKit, Beehiiv, Formspree, etc.)
-               when you're ready. For now it's front-end only. -->
-          <button type="submit" class="btn-full">
-            Get 20% Off & Join List
-          </button>
-        </form>
-
-        <div id="successMsg" class="success-msg">
-          ✅ You’re in! Your early-bird code is
-          <span>DOD20</span>. Use it on checkout when you upgrade to Premium.
-        </div>
-
-        <p class="small-note">
-          By joining, you agree to receive occasional emails about credit dispute
-          tips, templates, and product updates. No spam, unsubscribe anytime.
-        </p>
-      </div>
     </section>
 
-    <!-- FEATURES / SOCIAL PROOF -->
-    <section class="section">
-      <h2 class="section-title">Why Dispute On Demand Pro?</h2>
-      <p class="section-sub">
-        A lot of credit tools feel like black boxes. This one stays on your device,
-        gives you control, and speeds up the boring admin work.
-      </p>
-
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-title">Local-only processing</div>
-          <p>
-            Paste reports and generate letters directly in your browser. No login,
-            no cloud database, no uploading your full credit file to strangers.
-          </p>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Dispute On Demand?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>100% Private</h3>
+                    <p>All processing happens locally on your device. Zero cloud storage. Your credit data never leaves your computer.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast & Simple</h3>
+                    <p>Upload your credit report, select items to dispute, and generate professional FCRA-compliant letters in minutes.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>CROA Compliant</h3>
+                    <p>Built following Credit Repair Organizations Act guidelines. No false promises, just honest tools and guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>Professional Letters</h3>
+                    <p>Generate dispute letters for all 3 credit bureaus (Equifax, Experian, TransUnion) with proper formatting and legal citations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>State-Specific Laws</h3>
+                    <p>Includes credit dispute laws and regulations for all 50 states + DC to help you understand your rights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Affordable</h3>
+                    <p>Free tier includes 3 disputes. Premium unlimited access for just $19.99/month. No contracts or hidden fees.</p>
+                </div>
+            </div>
         </div>
-        <div class="feature-card">
-          <div class="feature-title">Disputes in batches</div>
-          <p>
-            Free plan lets you send up to 3 items at once. Premium unlocks unlimited
-            disputes per batch – perfect for deeper clean-ups and client work.
-          </p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-title">Saved client profiles</div>
-          <p>
-            For people helping family, friends, or clients: keep names, addresses
-            and notes stored locally so you’re not retyping information every time.
-          </p>
-        </div>
-      </div>
     </section>
 
-    <!-- FAQ / TESTIMONIAL -->
-    <section class="section" style="margin-top: 18px;">
-      <div class="faq-grid">
-        <div>
-          <h2 class="section-title">Common questions</h2>
-          <div class="faq-item">
-            <div class="faq-q">Is this legal advice?</div>
-            <div class="faq-a">
-              No. Dispute On Demand Pro helps you format letters using language that
-              references FCRA rights, but it does not replace an attorney. Always
-              talk to a lawyer for legal questions.
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <div class="pricing-grid">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="plan-name">Free</div>
+                    <div class="plan-price">$0</div>
+                    <ul class="plan-features">
+                        <li>Up to 3 disputes per session</li>
+                        <li>Upload credit reports</li>
+                        <li>Generate dispute letters</li>
+                        <li>All 3 bureau addresses</li>
+                        <li>State law database</li>
+                        <li class="unavailable">Save profiles</li>
+                        <li class="unavailable">Unlimited disputes</li>
+                        <li class="unavailable">Priority templates</li>
+                    </ul>
+                    <a href="app.html" class="btn btn-secondary">Start Free</a>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="pricing-card featured">
+                    <div class="plan-name">Premium</div>
+                    <div class="plan-price">$19.99<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>Unlimited disputes</li>
+                        <li>Save profiles locally</li>
+                        <li>Priority letter templates</li>
+                        <li>Advanced tracking</li>
+                        <li>All free features included</li>
+                        <li>Email support</li>
+                        <li>Cancel anytime</li>
+                    </ul>
+                    <a href="app.html" class="btn btn-primary">Upgrade to Premium</a>
+                </div>
             </div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">Do you store my credit report?</div>
-            <div class="faq-a">
-              No. Everything runs in your browser. Your data stays on your device.
-              Premium features like saved profiles use local storage only.
-            </div>
-          </div>
-          <div class="faq-item">
-            <div class="faq-q">Will this guarantee deletions?</div>
-            <div class="faq-a">
-              No one can guarantee deletions. The tool is designed to streamline
-              your dispute process and keep you organized, not promise outcomes.
-            </div>
-          </div>
         </div>
-        <div>
-          <div class="testimonial-card">
-            <div class="testimonial-quote">
-              “Instead of rewriting the same dispute letters over and over, now I
-              paste, click a few boxes, and export PDFs. It keeps me consistent and
-              saves me a ton of time.”
-            </div>
-            <div class="testimonial-author">
-              — Early beta tester, DIY credit repair
-            </div>
-          </div>
-          <div style="margin-top: 10px; font-size: 11px; color: #6b7280;">
-            <strong>Ready to try it?</strong> Use the free version first, then apply
-            your <strong>DOD20</strong> code when you upgrade to Premium.
-          </div>
-        </div>
-      </div>
     </section>
 
+    <!-- Trust Section -->
+    <section class="trust">
+        <div class="container">
+            <h2 class="section-title">Trusted by People Taking Control</h2>
+            <div class="testimonial">
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-text">"Honestly the best way I've seen to track disputes. Clear, simple, and it works."
+                — Sarah, Verified User
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-      <div>
-        <a href="#" onclick="goToApp();return false;">Launch App</a> •
-        <a href="mailto:youremail@example.com">Contact</a> •
-        <a href="#">Privacy</a>
-      </div>
-      <div style="margin-top: 4px;">
-        © <span id="year"></span> Dispute On Demand Pro. All rights reserved.
-      </div>
+        <div class="container">
+            <div class="footer-links">
+                <a href="terms.html">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="croa-disclosure.html">CROA Disclosure</a>
+                <a href="app.html">Launch App</a>
+            </div>
+            <div class="footer-disclaimer">
+                <p>© 2025 Dispute On Demand. All rights reserved.</p>
+                <p style="margin-top: 10px;">
+                    <strong>Important Disclosure:</strong> Dispute On Demand is a tool that provides information and document generation assistance. We do NOT guarantee specific credit score improvements or removal of accurate information. You have the right to dispute credit report errors for free by contacting credit bureaus directly at <a href="https://www.annualcreditreport.com" style="color: #cbd5e0;">www.annualcreditreport.com</a>. This tool is for convenience and does not replace your legal rights under the Fair Credit Reporting Act (FCRA).
+                </p>
+            </div>
+        </div>
     </footer>
-  </div>
-
-  <script>
-    // Go to your main app (currently index.html at root)
-    function goToApp() {
-      window.location.href = "/";
-      // If you move the app to /app.html, change this to "/app.html"
-    }
-
-    // Fake "collection" for now – local only + success message
-    const emailForm = document.getElementById("emailForm");
-    const successMsg = document.getElementById("successMsg");
-
-    emailForm.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      if (!email) {
-        alert("Please enter a valid email address.");
-        return;
-      }
-
-      // Store locally for now so you at least have a record on the device
-      const existing = JSON.parse(localStorage.getItem("dod_waitlist") || "[]");
-      existing.push({
-        name,
-        email,
-        ts: new Date().toISOString()
-      });
-      localStorage.setItem("dod_waitlist", JSON.stringify(existing));
-
-      // TODO: When you choose an email provider (Mailchimp, ConvertKit, Formspree, etc.),
-      // replace this with a real POST request to their endpoint.
-
-      successMsg.style.display = "block";
-      emailForm.reset();
-    });
-
-    // Set year
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
+

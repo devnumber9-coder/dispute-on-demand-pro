@@ -1023,12 +1023,12 @@
 
 Example format:
 Account Name: Capital One
-Account Number: 1234
+Account (?:Number|#)[:\-]?\s*([A-Z0-9]{2,20})
 Balance: $500
 Status: Late Payment
 
 Account Name: Chase Bank
-Account Number: 5678
+Account (?:Number|#)[:\-]?\s*([A-Z0-9]{2,20})
 Balance: $1200
 Status: Current"></textarea>
                         <button class="btn btn-primary mt-2" onclick="parseFromPaste()">
@@ -1626,8 +1626,7 @@ async function readAsText(file) {
                     name = lines[0].replace(/[:\-]+$/, '').trim();
                 }
 
-                // 2. Account number
-                let accountNumber = '';
+                // 2. Account (?:Number|#)[:\-]?\s*([A-Z0-9]{2,20}) accountNumber = '';
                 const acctLine = lines.find(l => /account\s*(number|#|nbr)/i.test(l));
                 if (acctLine) {
                     accountNumber = acctLine.split(':').slice(1).join(':').trim();
@@ -2061,6 +2060,7 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+
 
 
 

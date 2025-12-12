@@ -416,7 +416,65 @@
            DISPUTES LIST
            ============================================ */
         .disputes-list {
+                    .disputes-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .disputes-header-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .badges-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-type {
+            background: var(--color-primary-light);
+            color: var(--color-primary-dark);
+        }
+
+        .badge-negative {
+            background: #FDECEA;
+            color: #C0392B;
+        }
+
+        .badge-neutral {
+            background: var(--color-border);
+            color: var(--color-text-light);
+        }
+
+        .dispute-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
             margin-top: 32px;
+
         }
 
         .disputes-list h2 {
@@ -930,6 +988,9 @@
                     <a href="privacy.html" style="color: var(--color-primary); font-weight: 600;">Learn more</a>
                 </div>
             </div>
+                        <!-- Global app messages (info / warnings / success) -->
+            <div id="globalMessage" class="alert hidden"></div>
+
 
             <!-- Step 1: Upload Section -->
             <section id="uploadSection">
@@ -969,12 +1030,23 @@ Status: Current"></textarea>
                 </div>
             </section>
 
-            <!-- Step 2: Disputes List -->
+                       <!-- Step 2: Disputes List -->
             <section id="disputesSection" class="hidden">
                 <div class="disputes-list">
-                    <h2>Select Items to Dispute</h2>
-                    <div class="selected-count">
-                        <span>Selected: <span id="selectedCount">0</span></span>
+                    <div class="disputes-header-row">
+                        <div class="disputes-header-main">
+                            <h2>Select Items to Dispute</h2>
+                            <div class="selected-count">
+                                <span>Selected: <span id="selectedCount">0</span></span>
+                            </div>
+                        </div>
+
+                        <button type="button"
+                                class="btn btn-secondary btn-small"
+                                onclick="openDisputeForm('add')">
+                            <span>➕</span>
+                            <span>Add Dispute Manually</span>
+                        </button>
                     </div>
                     
                     <div class="alert alert-warning" id="limitWarning" style="display: none;">
@@ -999,6 +1071,7 @@ Status: Current"></textarea>
                     </div>
                 </div>
             </section>
+
 
             <!-- Step 3: Generated Letters -->
             <section id="lettersSection" class="hidden">
@@ -1079,6 +1152,43 @@ Status: Current"></textarea>
     </div>
 
     <!-- ============================================
+         DISPUTE ADD / EDIT MODAL
+         ============================================ -->
+    <div id="disputeFormModal" class="modal">
+        <div class="modal-content">
+            <h3 id="disputeFormTitle">Add Dispute</h3>
+
+            <div class="form-section">
+                <label>Creditor / Account Name *</label>
+                <input type="text" id="formName" placeholder="Capital One, Chase, Collection Agency">
+
+                <label>Account Number / Last 4 *</label>
+                <input type="text" id="formAccountNumber" placeholder="****1234">
+
+                <label>Balance</label>
+                <input type="text" id="formBalance" placeholder="$500.00">
+
+                <label>Status / What is wrong? *</label>
+                <input type="text" id="formStatus" placeholder="Collection reported inaccurately, Late payment not mine, etc.">
+
+                <label>Notes (for your reference)</label>
+                <textarea id="formNotes" rows="3" placeholder="Optional notes to help you remember what is wrong with this account."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" type="button" onclick="saveDisputeFromForm()">
+                    <span>💾</span>
+                    <span>Save Dispute</span>
+                </button>
+                <button class="btn btn-secondary" type="button" onclick="closeDisputeFormModal()">
+                    <span>✕</span>
+                    <span>Cancel</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
          JAVASCRIPT - APPLICATION LOGIC
          ============================================ -->
     <script>
@@ -1088,6 +1198,11 @@ Status: Current"></textarea>
         let appVersion = 'free';
         let parsedDisputes = [];
         let selectedDisputes = [];
+
+        // add/edit form state
+        let disputeFormMode = 'add';
+        let editingIndex = null;
+
 
         // Bureau addresses
         const bureauAddresses = {
@@ -1150,6 +1265,85 @@ Status: Current"></textarea>
         }
 
         // ============================================
+        // UI HELPERS - MESSAGES & ESCAPING
+        // ============================================
+        function showMessage(type, text) {
+            const el = document.getElementById('globalMessage');
+            if (!el) return;
+
+            el.className = 'alert'; // reset
+            if (type === 'info') {
+                el.classList.add('alert-info');
+            } else if (type === 'success') {
+                el.classList.add('alert-success');
+            } else if (type === 'warning') {
+                el.classList.add('alert-warning');
+            }
+            el.textContent = text;
+            el.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function clearMessage() {
+            const el = document.getElementById('globalMessage');
+            if (!el) return;
+            el.classList.add('hidden');
+        }
+
+        function escapeHtml(str) {
+            if (str === undefined || str === null) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // ============================================
+        // DISPUTE TYPE / NEGATIVE ITEM DETECTION
+        // ============================================
+        function detectAccountType(blockTextLower, statusLower) {
+            if (blockTextLower.includes('collection') || statusLower.includes('collection')) {
+                return 'Collection';
+            }
+            if (blockTextLower.includes('charge off') || blockTextLower.includes('charge-off') || statusLower.includes('charge')) {
+                return 'Charge-off';
+            }
+            if (blockTextLower.includes('mortgage') || blockTextLower.includes('real estate') || blockTextLower.includes('home loan')) {
+                return 'Mortgage';
+            }
+            if (blockTextLower.includes('auto') || blockTextLower.includes('vehicle') || blockTextLower.includes('car loan')) {
+                return 'Auto Loan';
+            }
+            if (blockTextLower.includes('student loan') || blockTextLower.includes('education')) {
+                return 'Student Loan';
+            }
+            if (blockTextLower.includes('credit card') || blockTextLower.includes('revolving')) {
+                return 'Credit Card';
+            }
+            if (blockTextLower.includes('installment')) {
+                return 'Installment';
+            }
+            return 'Other';
+        }
+
+        function isNegativeStatus(statusText) {
+            const s = (statusText || '').toLowerCase();
+            return (
+                s.includes('collection') ||
+                s.includes('charge off') ||
+                s.includes('charge-off') ||
+                s.includes('late') ||
+                s.includes('past due') ||
+                s.includes('delinquent') ||
+                s.includes('repossession') ||
+                s.includes('foreclosure')
+            );
+        }
+
+
+        // ============================================
         // FILE UPLOAD & DRAG/DROP
         // ============================================
         function setupDragAndDrop() {
@@ -1207,203 +1401,277 @@ Status: Current"></textarea>
             }
             parseFromText(text);
         }
-
         // ============================================
-// ENHANCED CREDIT REPORT PARSING
-// ============================================
-function parseFromText(text) {
-    parsedDisputes = [];
-    
-    // Split into lines for processing
-    const lines = text.split('\n');
-    let currentAccount = null;
-    
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        const upperLine = line.toUpperCase();
-        
-        // Detect new account section (multiple patterns)
-        if (upperLine.includes('ACCOUNT NAME') || 
-            upperLine.includes('ACCOUNT INFO') ||
-            (upperLine.match(/^[A-Z\s&]{3,40}$/) && lines[i+1] && lines[i+1].includes('Account'))) {
-            
-            // Save previous account if exists
-            if (currentAccount && currentAccount.name) {
-                parsedDisputes.push({...currentAccount});
-            }
-            
-            // Start new account
-            let accountName = '';
-            
-            // Pattern 1: "Account Name CAPITAL ONE"
-            if (upperLine.includes('ACCOUNT NAME')) {
-                accountName = line.split(/account name/i)[1]?.trim() || '';
-            }
-            // Pattern 2: "CAPITAL ONE" on its own line before "Account"
-            else if (upperLine.match(/^[A-Z\s&]{3,40}$/) && lines[i+1] && lines[i+1].includes('Account')) {
-                accountName = line;
-            }
-            
-            currentAccount = {
-                name: accountName || 'Unknown Account',
-                accountNumber: 'Not provided',
-                balance: '$0',
-                status: 'Unknown',
-                type: 'Unknown',
-                originalCreditor: ''
-            };
-        }
-        
-        // Parse account number (handles X's)
-        if (currentAccount && (upperLine.includes('ACCOUNT NUMBER') || upperLine.includes('ACCOUNT #'))) {
-            const match = line.match(/(\d{4,6}X+\d*|\d{10,})/i);
-            if (match) {
-                currentAccount.accountNumber = match[1];
-            }
-        }
-        
-        // Parse balance
-        if (currentAccount && upperLine.includes('BALANCE')) {
-            const balanceMatch = line.match(/\$?[\d,]+/);
-            if (balanceMatch) {
-                currentAccount.balance = '$' + balanceMatch[0].replace(/\$|,/g, '');
-            }
-        }
-        
-        // Parse status and detect account type
-        if (currentAccount && upperLine.includes('STATUS')) {
-            currentAccount.status = line.split(/status/i)[1]?.trim() || 'Unknown';
-            
-            // Detect COLLECTION
-            if (upperLine.includes('COLLECTION')) {
-                currentAccount.type = 'Collection';
-            }
-            // Detect CHARGE-OFF
-            else if (upperLine.includes('CHARGE') && upperLine.includes('OFF')) {
-                currentAccount.type = 'Charge-off';
-            }
-            // Detect LATE PAYMENT
-            else if (upperLine.includes('LATE') || upperLine.includes('PAST DUE')) {
-                currentAccount.type = 'Late Payment';
-            }
-            // Otherwise it's a regular account
-            else {
-                currentAccount.type = 'Credit Account';
-            }
-        }
-        
-        // Parse original creditor (for collections)
-        if (currentAccount && upperLine.includes('ORIGINAL CREDITOR')) {
-            currentAccount.originalCreditor = line.split(/original creditor/i)[1]?.trim() || '';
-        }
-        
-        // Detect account type from keywords anywhere in line
-        if (currentAccount) {
-            if (upperLine.includes('COLLECTION ACCOUNT') || upperLine.includes('DEBT BUYER')) {
-                currentAccount.type = 'Collection';
-            }
-            if (upperLine.includes('CHARGED OFF') || upperLine.includes('CHARGE OFF')) {
-                currentAccount.type = 'Charge-off';
-            }
-        }
-    }
-    
-    // Add last account
-    if (currentAccount && currentAccount.name) {
-        parsedDisputes.push({...currentAccount});
-    }
-    
-    // Remove duplicates and invalid accounts
-    parsedDisputes = parsedDisputes.filter((account, index, self) => 
-        account.name !== 'Unknown Account' &&
-        index === self.findIndex(a => a.name === account.name && a.accountNumber === account.accountNumber)
-    );
-    
-    // If no accounts found, show error message
-    if (parsedDisputes.length === 0) {
-        alert('⚠️ No accounts detected. Please paste your full credit report text, or use the "Add Dispute Manually" button.');
-        return;
-    }
-    
-    displayDisputes();
-}
-
-
+        // CREDIT REPORT PARSING (ADVANCED / EXPERIAN-AWARE)
         // ============================================
+        function parseFromText(text) {
+            clearMessage();
+            parsedDisputes = [];
+
+            if (!text || !text.trim()) {
+                showMessage('warning', 'We did not receive any text to parse. Please upload a file or paste your credit report text.');
+                return;
+            }
+
+            const normalized = text.replace(/\r\n/g, '\n');
+
+            // Experian & other reports usually separate accounts by blank lines
+            const blocks = normalized.split(/\n\s*\n+/);
+
+            blocks.forEach(block => {
+                const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+                if (!lines.length) return;
+
+                // Skip obvious section headers like "Accounts in Good Standing"
+                const headerOnly = lines.length === 1 &&
+                    /accounts in good standing|potentially negative items|public records/i.test(lines[0]);
+                if (headerOnly) return;
+
+                const hasAccountMarkers = /account\s*(number|#|nbr)|account name|creditor|company name|collection agency/i.test(block);
+                if (!hasAccountMarkers) return;
+
+                const lower = block.toLowerCase();
+
+                // 1. Name / Creditor
+                let name = '';
+                const nameLine = lines.find(l => /^((company|creditor|lender|account name)\s*:)/i.test(l));
+                if (nameLine) {
+                    name = nameLine.split(':').slice(1).join(':').trim();
+                } else {
+                    name = lines[0].replace(/[:\-]+$/, '').trim();
+                }
+
+                // 2. Account number
+                let accountNumber = '';
+                const acctLine = lines.find(l => /account\s*(number|#|nbr)/i.test(l));
+                if (acctLine) {
+                    accountNumber = acctLine.split(':').slice(1).join(':').trim();
+                }
+
+                // 3. Balance
+                let balance = '';
+                const balLine = lines.find(l => /(balance|amt owed|amount)/i.test(l));
+                if (balLine) {
+                    balance = balLine.split(':').slice(1).join(':').trim();
+                }
+
+                // 4. Status
+                let status = '';
+                const statusLine = lines.find(l => /(status|payment status|current status|remarks)/i.test(l));
+                if (statusLine) {
+                    status = statusLine.split(':').slice(1).join(':').trim();
+                } else {
+                    const statusMatch = block.match(/(collection|charge[\s-]?off|late payment|30 days past due|60 days past due|90 days past due|delinquent)/i);
+                    if (statusMatch) {
+                        status = statusMatch[0];
+                    }
+                }
+
+                const type = detectAccountType(lower, (status || '').toLowerCase());
+                const negative = isNegativeStatus(status) || /potentially negative/i.test(block);
+
+                parsedDisputes.push({
+                    name: name || 'Unknown Creditor',
+                    accountNumber: accountNumber || 'Not specified',
+                    balance: balance || '',
+                    status: status || 'Status not found',
+                    type: type,
+                    isNegative: negative,
+                    notes: ''
+                });
+            });
+
+            // If no accounts found, fall back to sample data so UX still works
+            if (parsedDisputes.length === 0) {
+                parsedDisputes = [
+                    { name: 'Sample Account 1', accountNumber: '****1234', balance: '$500', status: 'Late Payment', type: 'Credit Card', isNegative: true, notes: '' },
+                    { name: 'Sample Account 2', accountNumber: '****5678', balance: '$1,200', status: 'Collections', type: 'Collection', isNegative: true, notes: '' },
+                    { name: 'Sample Account 3', accountNumber: '****9012', balance: '$300', status: 'Charge-off', type: 'Charge-off', isNegative: true, notes: '' }
+                ];
+                showMessage('info', 'We could not automatically recognize your report format. Showing sample accounts so you can see how the tool works.');
+            } else {
+                showMessage('success', `We found ${parsedDisputes.length} account(s) in your credit report. Review and select which ones you want to dispute.`);
+            }
+
+            displayDisputes();
+        }
+
+
+
+                // ============================================
         // DISPLAY DISPUTES
         // ============================================
-  function displayDisputes() {
-    document.getElementById('uploadSection').classList.add('hidden');
-    document.getElementById('disputesSection').classList.remove('hidden');
-    
-    document.getElementById('step1').classList.remove('active');
-    document.getElementById('step1').classList.add('completed');
-    document.getElementById('step2').classList.add('active');
+        function displayDisputes() {
+            document.getElementById('uploadSection').classList.add('hidden');
+            document.getElementById('disputesSection').classList.remove('hidden');
+            
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
 
-    const disputesList = document.getElementById('disputesList');
-    disputesList.innerHTML = '';
+            const disputesList = document.getElementById('disputesList');
+            disputesList.innerHTML = '';
 
-    parsedDisputes.forEach((dispute, index) => {
-        // Determine badge class based on type
-        let badgeClass = 'badge-credit';
-        if (dispute.type === 'Collection') badgeClass = 'badge-collection';
-        else if (dispute.type === 'Charge-off') badgeClass = 'badge-chargeoff';
-        else if (dispute.type === 'Late Payment') badgeClass = 'badge-late';
-        
-        const item = document.createElement('div');
-        item.className = 'dispute-item';
-        item.innerHTML = `
-            <input type="checkbox" id="dispute_${index}" onchange="updateSelectedCount()">
-            <div class="dispute-details">
-                <strong>
-                    ${dispute.name}
-                    <span class="account-type-badge ${badgeClass}">${dispute.type}</span>
-                </strong>
-                <small>
-                    Account: ${dispute.accountNumber} | 
-                    Balance: ${dispute.balance} | 
-                    Status: ${dispute.status}
-                    ${dispute.originalCreditor ? ' | Original Creditor: ' + dispute.originalCreditor : ''}
-                </small>
-            </div>
-        `;
-        disputesList.appendChild(item);
-    });
-}
+            parsedDisputes.forEach((dispute, index) => {
+                const item = document.createElement('div');
+                item.className = 'dispute-item';
+
+                const typeLabel = dispute.type || 'Account';
+                const negativeLabel = dispute.isNegative ? 'Negative Item' : 'General / Neutral';
+                const negativeClass = dispute.isNegative ? 'badge-negative' : 'badge-neutral';
+
+                item.innerHTML = `
+                    <input type="checkbox"
+                           id="dispute_${index}"
+                           onchange="updateSelectedCount(event)">
+                    <div class="dispute-details">
+                        <strong>${escapeHtml(dispute.name)}</strong>
+                        <small>
+                            Account: ${escapeHtml(dispute.accountNumber || 'Not specified')}
+                            &nbsp;|&nbsp;
+                            Balance: ${escapeHtml(dispute.balance || 'N/A')}
+                            &nbsp;|&nbsp;
+                            Status: ${escapeHtml(dispute.status || 'N/A')}
+                        </small>
+                        <div class="badges-row">
+                            <span class="badge badge-type">${escapeHtml(typeLabel)}</span>
+                            <span class="badge ${negativeClass}">${negativeLabel}</span>
+                        </div>
+                    </div>
+                    <div class="dispute-item-actions">
+                        <button type="button"
+                                class="btn btn-secondary btn-small"
+                                onclick="openDisputeForm('edit', ${index})">
+                            Review / Edit
+                        </button>
+                    </div>
+                `;
+                disputesList.appendChild(item);
+            });
+
+            // Recalculate count on initial render
+            updateSelectedCount();
+        }
+
 
 
         // ============================================
         // SELECTION MANAGEMENT
         // ============================================
-        function updateSelectedCount() {
+        function updateSelectedCount(e) {
             const checkboxes = document.querySelectorAll('#disputesList input[type="checkbox"]');
             selectedDisputes = Array.from(checkboxes)
                 .map((cb, index) => cb.checked ? index : null)
                 .filter(i => i !== null);
 
-            const count = selectedDisputes.length;
+            let count = selectedDisputes.length;
 
             // Free tier limit check
             if (appVersion === 'free' && count > 3) {
-                event.target.checked = false;
+                if (e && e.target) {
+                    e.target.checked = false;
+                }
+                // Remove the last selected index
+                selectedDisputes.pop();
+                count = selectedDisputes.length;
                 document.getElementById('limitWarning').style.display = 'flex';
                 openPremiumModal();
-                return;
             }
 
             document.getElementById('selectedCount').textContent = count;
-            
+
             if (count > 0) {
                 document.getElementById('limitWarning').style.display = 'none';
             }
         }
 
         // ============================================
+        // ADD / EDIT DISPUTE MODAL
+        // ============================================
+        function openDisputeForm(mode, index) {
+            disputeFormMode = mode;
+            editingIndex = (typeof index === 'number') ? index : null;
+
+            const titleEl = document.getElementById('disputeFormTitle');
+
+            if (mode === 'edit' && editingIndex !== null && parsedDisputes[editingIndex]) {
+                const d = parsedDisputes[editingIndex];
+                titleEl.textContent = 'Review / Edit Dispute';
+                document.getElementById('formName').value = d.name || '';
+                document.getElementById('formAccountNumber').value = d.accountNumber || '';
+                document.getElementById('formBalance').value = d.balance || '';
+                document.getElementById('formStatus').value = d.status || '';
+                document.getElementById('formNotes').value = d.notes || '';
+            } else {
+                titleEl.textContent = 'Add Dispute Manually';
+                document.getElementById('formName').value = '';
+                document.getElementById('formAccountNumber').value = '';
+                document.getElementById('formBalance').value = '';
+                document.getElementById('formStatus').value = '';
+                document.getElementById('formNotes').value = '';
+            }
+
+            document.getElementById('disputeFormModal').classList.add('show');
+        }
+
+        function closeDisputeFormModal() {
+            document.getElementById('disputeFormModal').classList.remove('show');
+        }
+
+        function saveDisputeFromForm() {
+            const name = document.getElementById('formName').value.trim();
+            const accountNumber = document.getElementById('formAccountNumber').value.trim();
+            const balance = document.getElementById('formBalance').value.trim();
+            const status = document.getElementById('formStatus').value.trim();
+            const notes = document.getElementById('formNotes').value.trim();
+
+            if (!name || !accountNumber || !status) {
+                showMessage('warning', 'Please fill in at least the creditor name, account number, and status for this dispute.');
+                return;
+            }
+
+            const type = detectAccountType(
+                (name + ' ' + status).toLowerCase(),
+                status.toLowerCase()
+            );
+            const negative = isNegativeStatus(status);
+
+            if (disputeFormMode === 'edit' && editingIndex !== null && parsedDisputes[editingIndex]) {
+                parsedDisputes[editingIndex] = {
+                    ...parsedDisputes[editingIndex],
+                    name,
+                    accountNumber,
+                    balance,
+                    status,
+                    notes,
+                    type,
+                    isNegative: negative
+                };
+            } else {
+                parsedDisputes.push({
+                    name,
+                    accountNumber,
+                    balance,
+                    status,
+                    notes,
+                    type,
+                    isNegative: negative
+                });
+            }
+
+            closeDisputeFormModal();
+            clearMessage();
+            displayDisputes();
+            showMessage('success', 'Dispute details saved.');
+        }
+
+
+        // ============================================
         // LETTER GENERATION
         // ============================================
         function generateLetters() {
             if (selectedDisputes.length === 0) {
-                alert('⚠️ Please select at least one item to dispute.');
+                showMessage('warning', 'Please select at least one item to dispute before generating your letters.');
                 return;
             }
 
@@ -1414,11 +1682,11 @@ function parseFromText(text) {
             const userState = document.getElementById('userState').value;
 
             if (!userName || !userAddress || !userCity || !userState) {
-                alert('⚠️ Please fill in all your information in the sidebar.');
+                showMessage('warning', 'Please complete all of your information in the sidebar before generating letters.');
                 return;
             }
 
-            // Generate letters for each bureau
+            // Generate letters for each bureau (unchanged)
             const letters = [];
             Object.keys(bureauAddresses).forEach(bureau => {
                 const letter = generateLetterText(bureau, userName, userAddress, userCity, selectedDisputes);
@@ -1429,6 +1697,7 @@ function parseFromText(text) {
             });
 
             displayLetters(letters);
+            showMessage('success', 'Your dispute letters have been generated. Review them below and download as PDF.');
         }
 
         function generateLetterText(bureau, name, address, city, disputeIndices) {
@@ -1545,8 +1814,9 @@ This letter was generated using Dispute On Demand. You have the right to dispute
                 }, index * 1000);
             });
             
-            alert('📥 Downloading all PDFs... Each file will download automatically with a 1-second delay.');
+            showMessage('info', 'Downloading all dispute letters as PDFs. If your browser prompts you, please allow downloads.');
         }
+
 
         function copyToClipboard(index) {
             const element = document.getElementById(`letter_${index}`);
@@ -1588,14 +1858,20 @@ This letter was generated using Dispute On Demand. You have the right to dispute
         }
 
         // ============================================
-        // CLOSE MODAL ON OUTSIDE CLICK
+        // CLOSE MODALS ON OUTSIDE CLICK
         // ============================================
         window.onclick = function(event) {
-            const modal = document.getElementById('premiumModal');
-            if (event.target === modal) {
+            const premiumModal = document.getElementById('premiumModal');
+            const disputeModal = document.getElementById('disputeFormModal');
+
+            if (event.target === premiumModal) {
                 closePremiumModal();
             }
+            if (event.target === disputeModal) {
+                closeDisputeFormModal();
+            }
         }
+
     </script>
 </body>
 </html>

@@ -1715,6 +1715,8 @@ const isJustHeader = lines.length === 1 && block.length < 50;
 if (!hasAccountMarkers || isJustHeader) return;
 
 
+const type = detectAccountType(lower, (status || '').toLowerCase());
+const negative = isNegativeStatus(status);
 
                 parsedDisputes.push({
                     name: name || 'Unknown Creditor',
@@ -2121,6 +2123,7 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+
 
 
 

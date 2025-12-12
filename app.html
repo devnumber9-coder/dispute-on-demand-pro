@@ -1616,42 +1616,6 @@ async function readAsText(file) {
 
                 const lower = block.toLowerCase();
 
-                            // ============================================
-        // FILTER OUT NON-ACCOUNT BLOCKS
-        // ============================================
-        
-        // Skip government agencies and regulatory bodies
-        const governmentKeywords = [
-            'federal reserve', 'fdic', 'federal deposit insurance',
-            'consumer protection', 'department of', 'ftc', 'federal trade',
-            'surface transportation board', 'small business administration',
-            'air carriers', 'securities and exchange', 'brokers and dealers',
-            'credit union administration', 'office of', 'o ffi ce',
-            'noti fi cation', 'notification of rights', 'consumer response center',
-            'washington, dc', 'kansas city, mo', 'alexandria, va',
-            'box #', 'p.o. box', 'po box'
-        ];
-        
-        const isGovernmentAgency = governmentKeywords.some(keyword => 
-            lower.includes(keyword)
-        );
-        
-        if (isGovernmentAgency) return;
-        
-        // Skip legal disclaimers and boilerplate text
-        const legalKeywords = [
-            'act nearest', 'regional o ffi ce', 'associate administrator',
-            'subject to', 'operating under section', 'insured banks',
-            'state branches', 'foreign banks', 'finance companies',
-            'creditors not listed above', 'noti fi cation of rights for'
-        ];
-        
-        const isLegalText = legalKeywords.some(keyword => 
-            lower.includes(keyword)
-        );
-        
-        if (isLegalText) return;
-        
 
                 // 1. Name / Creditor
                 let name = '';
@@ -2097,6 +2061,7 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+
 
 
 

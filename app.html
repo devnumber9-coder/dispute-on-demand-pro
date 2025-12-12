@@ -21,6 +21,15 @@
     <!-- PDF Generation Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
+<!-- PDF Parsing Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- OCR Library for Scanned Documents -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.1.1/dist/tesseract.min.js"></script>
+
+<!-- Mammoth.js for Word Document Parsing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    
     <style>
         /* ============================================
            MODERN COLOR PALETTE - TRUSTWORTHY & WELCOMING
@@ -1000,7 +1009,7 @@
                     <p>Drag and drop your credit report file here, or click to browse</p>
                     
                     <div class="file-input-wrapper">
-                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx" onchange="handleFileUpload(event)">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.bmp,.tiff" onchange="handleFileUpload(event)">
                         <button class="upload-button">
                             📁 Choose File
                         </button>
@@ -1381,17 +1390,192 @@ Status: Current"></textarea>
             }
         }
 
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                parseFromText(text);
-            };
-            reader.readAsText(file);
+        async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Show loading message
+    showMessage('info', `Processing ${file.name}... This may take a moment for PDFs or scanned documents.`);
+    
+    const fileType = file.type;
+    const fileName = file.name.toLowerCase();
+    
+    try {
+        let extractedText = '';
+        
+        // Handle PDF files
+        if (fileType === 'application/pdf' || fileName.endsWith('.pdf')) {
+            extractedText = await extractTextFromPDF(file);
         }
+        // Handle Word documents
+        else if (fileType.includes('word') || fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
+            extractedText = await extractTextFromWord(file);
+        }
+        // Handle images with OCR
+        else if (fileType.startsWith('image/') || fileName.match(/\.(jpg|jpeg|png|gif|bmp|tiff)$/)) {
+            extractedText = await extractTextFromImage(file);
+        }
+        // Handle plain text
+        else {
+            extractedText = await readAsText(file);
+        }
+        
+        if (extractedText && extractedText.trim()) {
+            parseFromText(extractedText);
+        } else {
+            showMessage('warning', 'Could not extract text from this file. Please try pasting the text directly or use a different file format.');
+        }
+    } catch (error) {
+        console.error('File processing error:', error);
+        showMessage('warning', `Error processing file: ${error.message}. Please try pasting the text directly.`);
+    }
+}
+
+        // ============================================
+// DOCUMENT PARSING HELPER FUNCTIONS
+// ============================================
+
+// Extract text from PDF using PDF.js
+async function extractTextFromPDF(file) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        
+        fileReader.onload = async function() {
+            try {
+                const typedArray = new Uint8Array(this.result);
+                
+                // Configure PDF.js worker
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                
+                const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                let fullText = '';
+                
+                // Extract text from each page
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    const page = await pdf.getPage(pageNum);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n\n';
+                }
+                
+                // If PDF is mostly blank/scanned, try OCR
+                if (fullText.trim().length < 100) {
+                    showMessage('info', 'This PDF appears to be scanned. Attempting OCR... This may take a minute.');
+                    const ocrText = await extractTextFromPDFWithOCR(file);
+                    resolve(ocrText);
+                } else {
+                    resolve(fullText);
+                }
+            } catch (error) {
+                console.error('PDF parsing error:', error);
+                reject(new Error('Failed to parse PDF. The file may be corrupted or password-protected.'));
+            }
+        };
+        
+        fileReader.onerror = () => reject(new Error('Failed to read PDF file'));
+        fileReader.readAsArrayBuffer(file);
+    });
+}
+
+// Extract text from PDF using OCR (for scanned PDFs)
+async function extractTextFromPDFWithOCR(file) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        
+        fileReader.onload = async function() {
+            try {
+                const typedArray = new Uint8Array(this.result);
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                
+                const pdf = await pdfjsLib.getDocument(typedArray).promise;
+                let fullText = '';
+                
+                // Convert each page to image and OCR it
+                for (let pageNum = 1; pageNum <= Math.min(pdf.numPages, 10); pageNum++) {  // Limit to 10 pages for performance
+                    const page = await pdf.getPage(pageNum);
+                    const viewport = page.getViewport({ scale: 2.0 });
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+                    
+                    // OCR the canvas
+                    const result = await Tesseract.recognize(canvas, 'eng', {
+                        logger: m => {
+                            if (m.status === 'recognizing text') {
+                                console.log(`OCR Progress Page ${pageNum}: ${Math.round(m.progress * 100)}%`);
+                            }
+                        }
+                    });
+                    
+                    fullText += result.data.text + '\n\n';
+                }
+                
+                resolve(fullText);
+            } catch (error) {
+                console.error('PDF OCR error:', error);
+                reject(new Error('Failed to OCR PDF'));
+            }
+        };
+        
+        fileReader.onerror = () => reject(new Error('Failed to read PDF file'));
+        fileReader.readAsArrayBuffer(file);
+    });
+}
+
+// Extract text from Word document using Mammoth.js
+async function extractTextFromWord(file) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        
+        fileReader.onload = async function(e) {
+            try {
+                const arrayBuffer = e.target.result;
+                const result = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+                resolve(result.value);
+            } catch (error) {
+                console.error('Word parsing error:', error);
+                reject(new Error('Failed to parse Word document. Please try converting it to PDF or text.'));
+            }
+        };
+        
+        fileReader.onerror = () => reject(new Error('Failed to read Word file'));
+        fileReader.readAsArrayBuffer(file);
+    });
+}
+
+// Extract text from image using Tesseract OCR
+async function extractTextFromImage(file) {
+    return new Promise((resolve, reject) => {
+        showMessage('info', 'Running OCR on image... This may take up to a minute.');
+        
+        Tesseract.recognize(file, 'eng', {
+            logger: m => {
+                if (m.status === 'recognizing text') {
+                    console.log(`OCR Progress: ${Math.round(m.progress * 100)}%`);
+                }
+            }
+        }).then(result => {
+            resolve(result.data.text);
+        }).catch(error => {
+            console.error('OCR error:', error);
+            reject(new Error('Failed to recognize text from image. Please ensure the image has clear, readable text.'));
+        });
+    });
+}
+
+// Read plain text file
+async function readAsText(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('Failed to read text file'));
+        reader.readAsText(file);
+    });
+}
 
         function parseFromPaste() {
             const text = document.getElementById('pasteArea').value;
@@ -1875,3 +2059,4 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+

@@ -1691,42 +1691,6 @@ async function readAsText(file) {
                 const type = detectAccountType(lower, (status || '').toLowerCase());
                 const negative = isNegativeStatus(status) || /potentially negative/i.test(block);
 
-                        // ============================================
-        // FILTER OUT NON-ACCOUNT BLOCKS  
-        // ============================================
-        
-        // Skip government agencies
-        const governmentKeywords = [
-            'federal reserve', 'fdic', 'federal deposit insurance',
-            'consumer protection', 'department of', 'ftc', 'federal trade',
-            'surface transportation board', 'small business administration',
-            'air carriers', 'securities and exchange', 'brokers and dealers',
-            'credit union administration', 'office of', 'o ffi ce',
-            'noti fi cation', 'notification of rights', 'consumer response center',
-            'washington, dc', 'kansas city, mo', 'alexandria, va',
-            'box #', 'p.o. box', 'po box'
-        ];
-        if (governmentKeywords.some(k => lower.includes(k))) return;
-        
-        // Skip legal boilerplate
-        const legalKeywords = [
-            'act nearest', 'regional o ffi ce', 'associate administrator',
-            'subject to', 'operating under section', 'insured banks',
-            'creditors not listed above', 'noti fi cation of rights for'
-        ];
-        if (legalKeywords.some(k => lower.includes(k))) return;
-        
-        // Skip address-only entries
-        if (/^\d+.*street|avenue|drive|road|lane|boulevard/i.test(name)) return;
-        
-        // Require real data: actual account number OR balance OR negative status
-        if (!accountNumber || accountNumber === 'Not specified' || accountNumber === 'not found') {
-            if (!balance || balance === 'N/A' || balance === '') {
-                if (!negative) {
-                    return; // Skip if no real data
-                }
-            }
-        }
 
                 parsedDisputes.push({
                     name: name || 'Unknown Creditor',
@@ -2133,5 +2097,6 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+
 
 

@@ -1617,42 +1617,103 @@ async function readAsText(file) {
                 const lower = block.toLowerCase();
 
 
-                // 1. Name / Creditor
-                let name = '';
-                const nameLine = lines.find(l => /^((company|creditor|lender|account name)\s*:)/i.test(l));
-                if (nameLine) {
-                    name = nameLine.split(':').slice(1).join(':').trim();
-                } else {
-                    name = lines[0].replace(/[:\-]+$/, '').trim();
-                }
+// 1. Name / Creditor
+let name = '';
+const nameLine = lines.find(l => /^(company|creditor|lender|account name)\s*:?\s*/i.test(l));
+if (nameLine) {
+  // Handle both "Account Name: VALUE" and "Account Name\nVALUE" formats
+  const colonIndex = nameLine.indexOf(':');
+  if (colonIndex > -1) {
+    name = nameLine.substring(colonIndex + 1).trim();
+  } else {
+    // Get next line if current line only has label
+    const nameLineIndex = lines.indexOf(nameLine);
+    if (nameLineIndex > -1 && nameLineIndex + 1 < lines.length) {
+      name = lines[nameLineIndex + 1].trim();
+    }
+  }
+} else {
+  // Fallback: use first substantial line
+  name = lines.find(l => l.length > 3 && !/account|number|balance|status/i.test(l)) || lines[0];
+  name = name.replace(/[:\-]+$/, '').trim();
+}
 
-                // 2. Account (?:Number|#)[:\-]?\s*([A-Z0-9]{2,20}) accountNumber = '';
-                const acctLine = lines.find(l => /account\s*(number|#|nbr)/i.test(l));
-                if (acctLine) {
-                    accountNumber = acctLine.split(':').slice(1).join(':').trim();
-                }
 
-                // 3. Balance
-                let balance = '';
-                const balLine = lines.find(l => /(balance|amt owed|amount)/i.test(l));
-                if (balLine) {
-                    balance = balLine.split(':').slice(1).join(':').trim();
-                }
+// 2. Account Number - Enhanced for multiple formats
+let accountNumber = '';
+// Try regex patterns for masked/full account numbers
+const acctMatch = block.match(/account\s*(?:number|#|nbr)[:\-]?\s*([X\*\d]{4,20})/i);
+if (acctMatch) {
+  accountNumber = acctMatch[1].trim();
+} else {
+  // Fallback: find line with "account number" label
+  const acctLine = lines.find(l => /account\s*(number|#|nbr)/i.test(l));
+  if (acctLine) {
+    // Handle both inline and next-line formats
+    const colonIndex = acctLine.indexOf(':');
+    if (colonIndex > -1) {
+      accountNumber = acctLine.substring(colonIndex + 1).trim();
+    } else {
+      const acctLineIndex = lines.indexOf(acctLine);
+      if (acctLineIndex > -1 && acctLineIndex + 1 < lines.length) {
+        // Get next line that looks like account number
+        const nextLine = lines[acctLineIndex + 1];
+        if (/^[X\*\d\-\s]{4,}$/.test(nextLine)) {
+          accountNumber = nextLine.trim();
+        }
+      }
+    }
+  }
+}
 
-                // 4. Status
-                let status = '';
-                const statusLine = lines.find(l => /(status|payment status|current status|remarks)/i.test(l));
-                if (statusLine) {
-                    status = statusLine.split(':').slice(1).join(':').trim();
-                } else {
-                    const statusMatch = block.match(/(collection|charge[\s-]?off|late payment|30 days past due|60 days past due|90 days past due|delinquent)/i);
-                    if (statusMatch) {
-                        status = statusMatch[0];
-                    }
-                }
+// 3. Balance - Handle currency formats
+let balance = '';
+// Try regex for dollar amounts first
+const balMatch = block.match(/(?:balance|amt owed|amount)[:\-]?\s*(\$?\s*[\d,]+(?:\.\d{2})?)/i);
+if (balMatch) {
+  balance = balMatch.trim();
+} else {
+  const balLine = lines.find(l => /(balance|amt owed|amount)/i.test(l));
+  if (balLine) {
+    const colonIndex = balLine.indexOf(':');
+    if (colonIndex > -1) {
+      balance = balLine.substring(colonIndex + 1).trim();
+    }
+  }
+}
 
-                const type = detectAccountType(lower, (status || '').toLowerCase());
-                const negative = isNegativeStatus(status) || /potentially negative/i.test(block);
+
+               // 4. Status - Enhanced for various formats
+let status = '';
+const statusLine = lines.find(l => /(status|payment status|current status|remarks|condition)/i.test(l));
+if (statusLine) {
+  const colonIndex = statusLine.indexOf(':');
+  if (colonIndex > -1) {
+    status = statusLine.substring(colonIndex + 1).trim();
+  } else {
+    // Get next line if label only
+    const statusLineIndex = lines.indexOf(statusLine);
+    if (statusLineIndex > -1 && statusLineIndex + 1 < lines.length) {
+      status = lines[statusLineIndex + 1].trim();
+    }
+  }
+}
+
+// Fallback: look for common negative keywords
+if (!status || status.length < 2) {
+  const statusMatch = block.match(/(collection|charge[\s-]?off|late payment|30 days|60 days|90 days|delinquent|current|paid)/i);
+  if (statusMatch) {
+    status = statusMatch[0];
+  }
+}
+
+
+// More flexible account detection - don't skip blocks too aggressively
+const hasAccountMarkers = /account\s*(number|#|nbr|name)|creditor|company name|collection|balance|status|payment/i.test(block);
+// Only skip if it's clearly just a header
+const isJustHeader = lines.length === 1 && block.length < 50;
+if (!hasAccountMarkers || isJustHeader) return;
+
 
 
                 parsedDisputes.push({
@@ -2060,6 +2121,7 @@ This letter was generated using Dispute On Demand. You have the right to dispute
     </script>
 </body>
 </html>
+
 
 
 

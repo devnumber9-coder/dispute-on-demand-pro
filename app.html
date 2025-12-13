@@ -1,394 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="app()" x-init="init()" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispute On Demand - Credit Letter Generator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg: #ffffff;
-            --surface: #f8f9fa;
-            --card: #ffffff;
-            --text: #1a1a1a;
-            --text-light: #666;
-            --border: #e0e0e0;
-            --primary: #4a90e2;
-            --primary-dark: #357abd;
-            --success: #28a745;
-            --shadow: rgba(0,0,0,0.1);
-        }
-        
-        [data-theme="dark"] {
-            --bg: #1a1a1a;
-            --surface: #2d2d2d;
-            --card: #242424;
-            --text: #f5f5f5;
-            --text-light: #999;
-            --border: #3d3d3d;
-            --shadow: rgba(0,0,0,0.3);
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            transition: background 0.3s, color 0.3s;
-        }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .theme-toggle {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .theme-toggle:hover { background: var(--primary-dark); }
-        
-        .card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-        
-        h1 { font-size: 24px; margin-bottom: 5px; }
-        h2 { font-size: 20px; margin-bottom: 15px; color: var(--primary); }
-        
-        label {
-            display: block;
-            margin: 15px 0 5px;
-            font-weight: 500;
-            color: var(--text);
-        }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--border);
-            border-radius: 5px;
-            font-size: 14px;
-            background: var(--surface);
-            color: var(--text);
-            font-family: inherit;
-        }
-        
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            font-size: 15px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
-        
-        .btn-success {
-            background: var(--success);
-            color: white;
-            margin-top: 10px;
-        }
-        
-        .dispute-list { margin-top: 15px; }
-        .dispute-item {
-            background: var(--surface);
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .btn-remove {
-            background: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .btn-remove:hover { background: #c82333; }
-        
-        .hidden { display: none; }
-        
-        .letter-preview {
-            background: var(--surface);
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            white-space: pre-wrap;
-            font-family: 'Times New Roman', serif;
-            font-size: 14px;
-            line-height: 1.8;
-        }
-        
-        @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 15px; }
-            h1 { font-size: 20px; }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div>
-                <h1>💳 Dispute On Demand</h1>
-                <p style="color: var(--text-light); font-size: 14px;">Credit Dispute Letter Generator</p>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
-        </div>
-        
-        <div class="card">
-            <h2>Your Information</h2>
-            <label>Full Name *</label>
-            <input type="text" id="userName" placeholder="John Doe">
-            
-            <label>Address *</label>
-            <input type="text" id="userAddress" placeholder="123 Main Street">
-            
-            <label>City, State, ZIP *</label>
-            <input type="text" id="userCity" placeholder="New York, NY 10001">
-            
-            <label>State *</label>
-            <select id="userState">
-                <option value="">Select your state...</option>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
-                <option value="DC">Washington D.C.</option>
-            </select>
-        </div>
-        
-        <div class="card">
-            <h2>Add Dispute Items</h2>
-            <label>Creditor / Account Name *</label>
-            <input type="text" id="disputeName" placeholder="Capital One">
-            
-            <label>Account Number *</label>
-            <input type="text" id="disputeAccount" placeholder="****1234">
-            
-            <label>Why is this inaccurate? *</label>
-            <textarea id="disputeReason" rows="3" placeholder="This account is not mine / Incorrect balance / Late payment not accurate"></textarea>
-            
-            <button class="btn btn-primary" onclick="addDispute()" style="margin-top: 15px;">➕ Add Dispute</button>
-            
-            <div id="disputeList" class="dispute-list"></div>
-        </div>
-        
-        <div class="card">
-            <button class="btn btn-success" onclick="generateLetters()" style="width: 100%; font-size: 16px;">✍️ Generate Dispute Letters</button>
-        </div>
-        
-        <div id="lettersSection" class="hidden">
-            <div class="card">
-                <h2>Your Dispute Letters</h2>
-                <p style="margin-bottom: 15px; color: var(--text-light);">Review each letter and download as PDF</p>
-                <div id="lettersContainer"></div>
-            </div>
-        </div>
-    </div>
+    <title>Dispute On Demand - Modern Credit Dispute Generator</title>
+    
+    <!-- Alpine.js for Reactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script>
-        let disputes = [];
-        const bureaus = {
-            equifax: { name: 'Equifax', address: 'Equifax Information Services LLC\\nP.O. Box 740256\\nAtlanta, GA 30374' },
-            experian: { name: 'Experian', address: 'Experian\\nP.O. Box 4500\\nAllen, TX 75013' },
-            transunion: { name: 'TransUnion', address: 'TransUnion LLC\\nConsumer Dispute Center\\nP.O. Box 2000\\nChester, PA 19016' }
-        };
-        
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            document.querySelector('.theme-toggle').textContent = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
-            localStorage.setItem('theme', newTheme);
-        }
-        
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            document.querySelector('.theme-toggle').textContent = '☀️ Light Mode';
-        }
-        
-        function addDispute() {
-            const name = document.getElementById('disputeName').value.trim();
-            const account = document.getElementById('disputeAccount').value.trim();
-            const reason = document.getElementById('disputeReason').value.trim();
-            
-            if (!name || !account || !reason) {
-                alert('⚠️ Please fill in all fields');
-                return;
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4a90e2',
+                        'primary-dark': '#357abd'
+                    }
+                }
             }
-            
-            disputes.push({ name, account, reason });
-            
-            document.getElementById('disputeName').value = '';
-            document.getElementById('disputeAccount').value = '';
-            document.getElementById('disputeReason').value = '';
-            
-            renderDisputes();
         }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    
+    <!-- Main App Container -->
+    <div class="min-h-screen">
         
-        function removeDispute(index) {
-            disputes.splice(index, 1);
-            renderDisputes();
-        }
-        
-        function renderDisputes() {
-            const list = document.getElementById('disputeList');
-            if (disputes.length === 0) {
-                list.innerHTML = '';
-                return;
-            }
-            
-            list.innerHTML = disputes.map((d, i) => `
-                <div class="dispute-item">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex justify-between items-center">
                     <div>
-                        <strong>${d.name}</strong> - ${d.account}<br>
-                        <small style="color: var(--text-light);">${d.reason}</small>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                            💳 Dispute On Demand
+                        </h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">FCRA-Compliant Credit Dispute Generator</p>
                     </div>
-                    <button class="btn-remove" onclick="removeDispute(${i})">Remove</button>
+                    <button @click="darkMode = !darkMode" 
+                            class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        <span x-show="!darkMode">🌙 Dark</span>
+                        <span x-show="darkMode">☀️ Light</span>
+                    </button>
                 </div>
-            `).join('');
-        }
-        
-        function generateLetters() {
-            if (disputes.length === 0) {
-                alert('⚠️ Please add at least one dispute item');
-                return;
-            }
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             
-            const name = document.getElementById('userName').value.trim();
-            const address = document.getElementById('userAddress').value.trim();
-            const city = document.getElementById('userCity').value.trim();
-            const state = document.getElementById('userState').value;
-            
-            if (!name || !address || !city || !state) {
-                alert('⚠️ Please fill in all your information');
-                return;
-            }
-            
-            const container = document.getElementById('lettersContainer');
-            container.innerHTML = '';
-            
-            Object.keys(bureaus).forEach(bureau => {
-                const letter = createLetter(bureau, name, address, city);
-                const div = document.createElement('div');
-                div.style.marginBottom = '20px';
-                div.innerHTML = `
-                    <h3 style="margin-bottom: 10px;">📄 ${bureaus[bureau].name}</h3>
-                    <div class="letter-preview" id="letter-${bureau}">${letter}</div>
-                    <button class="btn btn-primary" onclick="downloadPDF('${bureau}')">⬇️ Download PDF</button>
-                `;
-                container.appendChild(div);
-            });
-            
-            document.getElementById('lettersSection').classList.remove('hidden');
-            document.getElementById('lettersSection').scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function createLetter        function createLetter(bureau, name, address, city) {
-            const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-            const bureauInfo = bureaus[bureau];
-            
-            let disputeItems = '';
-            disputes.forEach((d, i) => {
-                disputeItems += `
-${i + 1}. ${d.name}
-   Account Number: ${d.account}
-   Reason for Dispute: ${d.reason}
-`;
-            });
-            
-            return `${name}
-${address}
-${city}
+            <!-- Progress Steps -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between">
+                    <template x-for="(step, index) in steps" :key="index">
+                        <div class="flex-1 flex flex-col items-center relative">
+                            <div :class="currentStep >= index + 1 ? 'bg-primary text-white' : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'"
+                                 class="w-10 h-10 rounded-full flex items-center justify-center font-bold z-10">
+                                <span x-text="index + 1"></span>
+                            </div>
+                            <p class="text-xs mt-2 text-gray-600 dark:text-gray-400" x-text="step.label"></p>
+                            <div x-show="index < steps.length - 1" 
+                                 class="absolute top-5 left-1/2 w-full h-0.5 bg-gray-300 dark:bg-gray-700 -z-10"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Step 1: User Information -->
+            <div x-show="currentStep === 1" class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Your Information</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Full Name *</label>
+                        <input x-model="userData.name" type="text" 
+                               class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Address *</label>
+                        <input x-model="userData.address" type="text" 
+                               class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">City, State, ZIP *</label>
+                        <input x-model="userData.city" type="text" 
+                               class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">State *</label>
+                        <select x-model="userData.state" 
+                                class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="">Select...</option>
+                            <option value="CA">California</option>
+                            <option value="NY">New York</option>
+                            <option value="TX">Texas</option>
+                            <option value="FL">Florida</option>
+                            <!-- Add all states -->
+                        </select>
+                    </div>
+                </div>
+
+                <button @click="nextStep()" 
+                        class="mt-6 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition">
+                    Continue →
+                </button>
+            </div>
+
+            <!-- Step 2: Upload/Parse Report -->
+            <div x-show="currentStep === 2" class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Upload Credit Report</h2>
+                
+                <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+                    <input @change="handleFileUpload" type="file" accept=".pdf,.txt" class="hidden" id="fileUpload">
+                    <label for="fileUpload" class="cursor-pointer">
+                        <div class="text-4xl mb-2">📄</div>
+                        <p class="text-gray-600 dark:text-gray-400">Click to upload or drag & drop</p>
+                        <p class="text-sm text-gray-500">PDF or Text files only</p>
+                    </label>
+                </div>
+
+                <div class="mt-6">
+                    <p class="text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Or paste text:</p>
+                    <textarea x-model="pastedText" rows="6" @input="parseText()"
+                              class="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white font-mono text-sm"
+                              placeholder="Paste your credit report text here..."></textarea>
+                </div>
+
+                <div class="flex gap-4 mt-6">
+                    <button @click="prevStep()" class="px-6 py-3 bg-gray-300 dark:bg-gray-700 rounded-lg">← Back</button>
+                    <button @click="nextStep()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark">Continue →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Select Disputes -->
+            <div x-show="currentStep === 3" class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Select Disputes</h2>
+                
+                <div class="space-y-4">
+                    <template x-for="(dispute, index) in disputes" :key="index">
+                        <div class="border dark:border-gray-700 rounded-lg p-4 flex items-center gap-4">
+                            <input type="checkbox" x-model="dispute.selected" class="w-5 h-5">
+                            <div class="flex-1">
+                                <p class="font-semibold text-gray-900 dark:text-white" x-text="dispute.name"></p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400" x-text="'Account: ' + dispute.account"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <button @click="addManualDispute()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg">+ Add Manual</button>
+
+                <div class="flex gap-4 mt-6">
+                    <button @click="prevStep()" class="px-6 py-3 bg-gray-300 dark:bg-gray-700 rounded-lg">← Back</button>
+                    <button @click="generateLetters()" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark">Generate Letters →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Download Letters -->
+            <div x-show="currentStep === 4" class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Your Dispute Letters</h2>
+                
+                <div class="space-y-6">
+                    <template x-for="bureau in ['Equifax', 'Experian', 'TransUnion']" :key="bureau">
+                        <div class="border dark:border-gray-700 rounded-lg p-4">
+                            <h3 class="font-bold mb-2 text-gray-900 dark:text-white" x-text="bureau"></h3>
+                            <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded text-sm overflow-auto" x-text="letters[bureau]"></pre>
+                            <button @click="downloadPDF(bureau)" class="mt-4 px-4 py-2 bg-primary text-white rounded-lg">Download PDF</button>
+                        </div>
+                    </template>
+                </div>
+
+                <button @click="reset()" class="mt-6 px-6 py-3 bg-gray-300 dark:bg-gray-700 rounded-lg">Start Over</button>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function app() {
+            return {
+                darkMode: false,
+                currentStep: 1,
+                steps: [
+                    { label: 'Your Info' },
+                    { label: 'Upload Report' },
+                    { label: 'Select Disputes' },
+                    { label: 'Download' }
+                ],
+                userData: {
+                    name: '',
+                    address: '',
+                    city: '',
+                    state: ''
+                },
+                pastedText: '',
+                disputes: [],
+                letters: {},
+
+                init() {
+                    this.darkMode = localStorage.getItem('darkMode') === 'true';
+                    this.$watch('darkMode', value => localStorage.setItem('darkMode', value));
+                },
+
+                nextStep() {
+                    if (this.currentStep < 4) this.currentStep++;
+                },
+
+                prevStep() {
+                    if (this.currentStep > 1) this.currentStep--;
+                },
+
+                async handleFileUpload(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    if (file.type === 'application/pdf') {
+                        // PDF parsing logic here
+                        alert('PDF parsing coming soon!');
+                    } else {
+                        const text = await file.text();
+                        this.pastedText = text;
+                        this.parseText();
+                    }
+                },
+
+                parseText() {
+                    // Simple parsing logic
+                    const lines = this.pastedText.split('\n');
+                    const found = [];
+                    
+                    lines.forEach((line, i) => {
+                        if (line.match(/account|creditor/i) && lines[i+1]) {
+                            found.push({
+                                name: line.trim(),
+                                account: lines[i+1].trim(),
+                                selected: false
+                            });
+                        }
+                    });
+
+                    this.disputes = found;
+                },
+
+                addManualDispute() {
+                    const name = prompt('Creditor name:');
+                    const account = prompt('Account number:');
+                    if (name && account) {
+                        this.disputes.push({ name, account, selected: true });
+                    }
+                },
+
+                generateLetters() {
+                    const selected = this.disputes.filter(d => d.selected);
+                    if (selected.length === 0) {
+                        alert('Please select at least one dispute');
+                        return;
+                    }
+
+                    const bureaus = ['Equifax', 'Experian', 'TransUnion'];
+                    bureaus.forEach(bureau => {
+                        this.letters[bureau] = this.createLetter(bureau, selected);
+                    });
+
+                    this.currentStep = 4;
+                },
+
+                                createLetter(bureau, disputes) {
+                    const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    let items = '';
+                    disputes.forEach((d, i) => {
+                        items += `\n${i+1}. ${d.name}\n   Account: ${d.account}\n   Reason: Inaccurate information\n`;
+                    });
+
+                    return `${this.userData.name}
+${this.userData.address}
+${this.userData.city}
 
 ${today}
 
-${bureauInfo.address}
+${bureau} Credit Bureau
+[Bureau Address]
 
 Re: Request for Investigation of Inaccurate Credit Information
 
@@ -397,7 +295,8 @@ Dear Sir/Madam,
 I am writing to dispute inaccurate information appearing on my credit report. Under the Fair Credit Reporting Act (FCRA) 15 U.S.C. § 1681, I have the right to request that you investigate and correct any inaccurate, incomplete, or unverifiable information in my credit file.
 
 The following items on my credit report are inaccurate:
-${disputeItems}
+${items}
+
 Under FCRA § 611(a)(1)(A), you are required to conduct a reasonable investigation of my dispute within 30 days of receiving this letter. If you cannot verify the accuracy of this information, you must delete it from my credit file pursuant to FCRA § 611(a)(5)(A).
 
 I request that you:
@@ -412,25 +311,8 @@ Thank you for your prompt attention to this matter.
 
 Sincerely,
 
-${name}
+${this.userData.name}
 
 ---
-This letter was generated using Dispute On Demand. You have the right to dispute credit report errors for free by contacting credit bureaus directly.`;
-        }
-        
-        function downloadPDF(bureau) {
-            const element = document.getElementById(`letter-${bureau}`);
-            const opt = {
-                margin: 0.5,
-                filename: `${bureaus[bureau].name}_Dispute_Letter.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            };
-            
-            html2pdf().set(opt).from(element).save();
-        }
-    </script>
-</body>
-</html>
-
+Generated by Dispute On Demand. You have the right to dispute credit report errors for free.`;
+                }}}
